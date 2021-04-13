@@ -14,7 +14,6 @@
 
         <Label Grid.Row="0">Main Importer</Label>
 
-
         <Grid Grid.Row="1">
 
             <Grid.RowDefinitions>
@@ -59,6 +58,36 @@
             <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch"  Height="23" TextWrapping="Wrap" IsReadOnly="True"  
                      Text="{Binding RegionalListsFile, Mode=OneWay}" VerticalAlignment="Center" 
                      Margin="10,0,10,0"/>
+
+
+            <TabControl    Grid.Row="4"  Grid.Column="0" Grid.ColumnSpan="3" >
+                <TabItem Header="Party Names and Abbreviations">
+
+                    <DataGrid AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=PartyNotesList, Mode=OneWay}"
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Abbreviation" 
+                                                Binding="{Binding Abbreviation}" 
+                                                MinWidth="150"/>
+
+                            <DataGridTextColumn Header="Full Name" 
+                                                Binding="{Binding FullName}" 
+                                                Width="Auto"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </TabItem>
+                <TabItem Header="Constituencies">
+
+                </TabItem>
+                <TabItem Header="Regional Lists">
+
+                </TabItem>
+            </TabControl>
 
         </Grid>
 

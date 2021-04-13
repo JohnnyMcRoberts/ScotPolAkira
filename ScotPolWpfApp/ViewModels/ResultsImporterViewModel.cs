@@ -1,4 +1,7 @@
-﻿using ElectionDataParser;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using ElectionDataParser;
+using ElectionDataTypes;
 using ScotPolWpfApp.Models;
 
 namespace ScotPolWpfApp.ViewModels
@@ -13,7 +16,7 @@ namespace ScotPolWpfApp.ViewModels
     {
         #region Constants
 
-        private readonly string[] _importersList = new[]
+        private readonly string[] _importersList = 
         {
             "Import Notes",
             "Import Constituencies",
@@ -56,6 +59,9 @@ namespace ScotPolWpfApp.ViewModels
         /// </summary>
         public string LoadListResultsText => _importersList[2];
 
+        /// <summary>
+        /// The Notes 
+        /// </summary>
         public string NotesFile
         {
             get => _notesFile;
@@ -78,6 +84,8 @@ namespace ScotPolWpfApp.ViewModels
             set { _hasNotes = value; NotifyOfPropertyChange(() => HasNotes); }
 
         }
+
+        public ObservableCollection<PartyNote> PartyNotesList { get; private set; }
 
         #endregion
 
@@ -117,6 +125,17 @@ namespace ScotPolWpfApp.ViewModels
 
             NotesFile = parser.FilePath;
             HasNotes = parser.ReadSuccessfully;
+
+            if (HasNotes)
+            {
+
+                PartyNotesList.Clear();
+
+                foreach (string abbreviation in parser.PartiesProvider.PartyAbbreviations.OrderBy(x => x))
+                {
+                    PartyNotesList.Add(new PartyNote { Abbreviation = abbreviation, FullName = parser.PartiesProvider.PartiesByAbbreviation[abbreviation]});
+                }
+            }
         }
 
         #endregion
@@ -132,6 +151,9 @@ namespace ScotPolWpfApp.ViewModels
             _regionalListsFile = string.Empty;
 
             _hasNotes = false;
+
+            PartyNotesList = new ObservableCollection<PartyNote>();
+
         }
     }
 }
