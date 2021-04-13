@@ -7,13 +7,37 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Caliburn" Version="2.0.0" />
-    <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
-    <PackageReference Include="Caliburn.Micro.Core" Version="3.2.0" />
+    <None Remove="appsettings.Development.json" />
+    <None Remove="appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Content Include="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Caliburn" Version="2.0.0" />
+    <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="3.2.0" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ElectionDataParser\ElectionDataParser.csproj" />
+    <ProjectReference Include="..\ElectionDataTypes\ElectionDataTypes.csproj" />
   </ItemGroup>
 
 </Project>

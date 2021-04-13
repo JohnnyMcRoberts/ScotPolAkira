@@ -10,6 +10,18 @@
              Title="{Binding WindowTitle}"
              Height="600" Width="800">
     <Grid>
+        <TabControl>
+            <TabItem Header="Importers">
+
+                <local:ResultsImporterView  DataContext="{Binding Path=ResultsImporter}"/>
+
+            </TabItem>
+            <TabItem Header="Polls">
+
+                <Label>Here is some stuff</Label>
+
+            </TabItem>
+        </TabControl>
             
     </Grid>
 </Window>
