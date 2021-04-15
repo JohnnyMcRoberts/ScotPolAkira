@@ -31,6 +31,8 @@ namespace ScotPolWpfApp.ViewModels
 
         private bool _hasNotes;
 
+        private bool _hasConstituencies;
+
         #endregion
 
         #region Private Data
@@ -39,6 +41,16 @@ namespace ScotPolWpfApp.ViewModels
         /// The load notes command.
         /// </summary>
         private ICommand _loadNotesCommand;
+
+        /// <summary>
+        /// The load constituency results command.
+        /// </summary>
+        private ICommand _loadConstituencyResultsCommand;
+
+        /// <summary>
+        /// The load list results command.
+        /// </summary>
+        private ICommand _loadListResultsCommand;
 
         #endregion
 
@@ -50,42 +62,69 @@ namespace ScotPolWpfApp.ViewModels
         public string LoadNotesText => _importersList[0];
 
         /// <summary>
-        /// Gets the load notes text.
+        /// Gets the load constituency results text.
         /// </summary>
         public string LoadConstituencyResultsText => _importersList[1];
 
         /// <summary>
-        /// Gets the load notes text.
+        /// Gets the load list results text.
         /// </summary>
         public string LoadListResultsText => _importersList[2];
 
         /// <summary>
-        /// The Notes 
+        /// Gets or sets the notes file name.
         /// </summary>
         public string NotesFile
         {
             get => _notesFile;
             set { _notesFile = value; NotifyOfPropertyChange(() => NotesFile); }
         }
+
+        /// <summary>
+        /// Gets or sets the constituency results file name.
+        /// </summary>
         public string ConstituenciesFile
         {
             get => _constituenciesFile;
             set { _constituenciesFile = value; NotifyOfPropertyChange(() => ConstituenciesFile); }
         }
+
+        /// <summary>
+        /// Gets or sets the list results file name.
+        /// </summary>
         public string RegionalListsFile
         {
             get => _regionalListsFile;
             set { _regionalListsFile = value; NotifyOfPropertyChange(() => RegionalListsFile); }
         }
 
+        /// <summary>
+        /// Gets or sets if the the data model has notes.
+        /// </summary>
         public bool HasNotes
         {
             get => _hasNotes;
             set { _hasNotes = value; NotifyOfPropertyChange(() => HasNotes); }
-
         }
 
-        public ObservableCollection<PartyNote> PartyNotesList { get; private set; }
+        /// <summary>
+        /// Gets or sets if the the data model has constituencies results.
+        /// </summary>
+        public bool HasConstituencies
+        {
+            get => _hasConstituencies;
+            set { _hasConstituencies = value; NotifyOfPropertyChange(() => HasConstituencies); }
+        }
+
+        /// <summary>
+        /// Gets the party notes list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<PartyNote> PartyNotesList { get; }
+
+        /// <summary>
+        /// Gets the constituency result list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<ConstituencyResult> ConstituencyResultsList { get; }
 
         #endregion
 
@@ -95,19 +134,22 @@ namespace ScotPolWpfApp.ViewModels
         /// Load the notes command.
         /// </summary>
         public ICommand LoadNotesCommand =>
-            _loadNotesCommand ?? (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
+            _loadNotesCommand ??
+                (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
 
         /// <summary>
-        /// Load the notes command.
+        /// Load the constituency results file command.
         /// </summary>
         public ICommand LoadConstituencyResultsCommand =>
-            _loadNotesCommand ?? (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
+            _loadConstituencyResultsCommand ?? 
+                (_loadConstituencyResultsCommand = new CommandHandler(LoadConstituencyResultsCommandAction, true));
 
         /// <summary>
-        /// Load the notes command.
+        /// Load the list results command.
         /// </summary>
         public ICommand LoadListResultsCommand =>
-            _loadNotesCommand ?? (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
+            _loadListResultsCommand ?? 
+                (_loadListResultsCommand = new CommandHandler(LoadListResultsCommandAction, true));
 
         #endregion
 
@@ -119,8 +161,8 @@ namespace ScotPolWpfApp.ViewModels
         private void LoadNotesCommandAction()
         {
             Console.WriteLine("LoadNotesCommandAction");
-         
-            NotesFileParser parser = 
+
+            NotesFileParser parser =
                 new NotesFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
 
             NotesFile = parser.FilePath;
@@ -133,7 +175,56 @@ namespace ScotPolWpfApp.ViewModels
 
                 foreach (string abbreviation in parser.PartiesProvider.PartyAbbreviations.OrderBy(x => x))
                 {
-                    PartyNotesList.Add(new PartyNote { Abbreviation = abbreviation, FullName = parser.PartiesProvider.PartiesByAbbreviation[abbreviation]});
+                    PartyNotesList.Add(new PartyNote { Abbreviation = abbreviation, FullName = parser.PartiesProvider.PartiesByAbbreviation[abbreviation] });
+                }
+            }
+        }
+
+        /// <summary>
+        /// The load constituency results file command action.
+        /// </summary>
+        private void LoadConstituencyResultsCommandAction()
+        {
+            Console.WriteLine("LoadNotesCommandAction");
+
+            ConstituencyResultsFileParser parser =
+                new ConstituencyResultsFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
+
+            ConstituenciesFile = parser.FilePath;
+            HasConstituencies = parser.ReadSuccessfully;
+
+            if (HasConstituencies)
+            {
+                ConstituencyResultsList.Clear();
+
+                foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
+                {
+                    ConstituencyResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The load list results file command action.
+        /// </summary>
+        private void LoadListResultsCommandAction()
+        {
+            Console.WriteLine("LoadNotesCommandAction");
+
+            NotesFileParser parser =
+                new NotesFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
+
+            NotesFile = parser.FilePath;
+            HasNotes = parser.ReadSuccessfully;
+
+            if (HasNotes)
+            {
+
+                PartyNotesList.Clear();
+
+                foreach (string abbreviation in parser.PartiesProvider.PartyAbbreviations.OrderBy(x => x))
+                {
+                    PartyNotesList.Add(new PartyNote { Abbreviation = abbreviation, FullName = parser.PartiesProvider.PartiesByAbbreviation[abbreviation] });
                 }
             }
         }
@@ -151,9 +242,10 @@ namespace ScotPolWpfApp.ViewModels
             _regionalListsFile = string.Empty;
 
             _hasNotes = false;
+            _hasConstituencies = false;
 
             PartyNotesList = new ObservableCollection<PartyNote>();
-
+            ConstituencyResultsList = new ObservableCollection<ConstituencyResult>();
         }
     }
 }

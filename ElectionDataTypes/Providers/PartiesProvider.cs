@@ -25,11 +25,18 @@ namespace ElectionDataTypes.Providers
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartiesProvider"/> class.
+        /// </summary>
         public PartiesProvider()
         {
             PartiesByAbbreviation = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartiesProvider"/> class.
+        /// </summary>
+        /// <param name="partyNotes">The party notes it is constructed from.</param>
         public PartiesProvider(List<PartyNote> partyNotes) : this()
         {
             foreach (PartyNote party in partyNotes)

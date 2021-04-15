@@ -18,9 +18,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="90"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -43,24 +41,42 @@
                     Command="{Binding Path=LoadListResultsCommand}"
                     IsEnabled="{Binding HasNotes}"/>
 
+            <Grid Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3">
 
-            <Label   Grid.Row="1"  Grid.Column="0">Notes file:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch"  Height="23" TextWrapping="Wrap" IsReadOnly="True"  
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label   Grid.Row="0"  Grid.Column="0">Notes file:</Label>
+                <TextBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch"  
+                         Height="23" TextWrapping="Wrap" IsReadOnly="True"  
                      Text="{Binding NotesFile, Mode=OneWay}" VerticalAlignment="Center" 
                      Margin="10,0,10,0"/>
 
-            <Label   Grid.Row="2"  Grid.Column="0">Constituencies file:</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch"  Height="23" TextWrapping="Wrap" IsReadOnly="True"  
+
+                <Label   Grid.Row="1"  Grid.Column="0">Constituencies file:</Label>
+
+                <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  
+                         Height="23" TextWrapping="Wrap" IsReadOnly="True"  
                      Text="{Binding ConstituenciesFile, Mode=OneWay}" VerticalAlignment="Center" 
                      Margin="10,0,10,0"/>
 
-            <Label   Grid.Row="3"  Grid.Column="0">Regional Lists file:</Label>
-            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch"  Height="23" TextWrapping="Wrap" IsReadOnly="True"  
+                <Label   Grid.Row="2"  Grid.Column="0">Regional Lists file:</Label>
+                <TextBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch"  
+                         Height="23" TextWrapping="Wrap" IsReadOnly="True"  
                      Text="{Binding RegionalListsFile, Mode=OneWay}" VerticalAlignment="Center" 
                      Margin="10,0,10,0"/>
 
+            </Grid>
 
-            <TabControl    Grid.Row="4"  Grid.Column="0" Grid.ColumnSpan="3" >
+            <TabControl  Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" >
                 <TabItem Header="Party Names and Abbreviations">
 
                     <DataGrid AutoGenerateColumns="False"
@@ -82,6 +98,40 @@
 
                 </TabItem>
                 <TabItem Header="Constituencies">
+
+                    <DataGrid AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=ConstituencyResultsList, Mode=OneWay}"
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Constituency" 
+                                                Binding="{Binding Constituency}" 
+                                                MinWidth="150"/>
+
+                            <DataGridTextColumn Header="Region" 
+                                                Binding="{Binding Region}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Winning Party" 
+                                                Binding="{Binding Win}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Second Party" 
+                                                Binding="{Binding Second}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Majority" 
+                                                Binding="{Binding Majority}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Majority (%)" 
+                                                Binding="{Binding MajorityPercentage}" 
+                                                Width="Auto"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
 
                 </TabItem>
                 <TabItem Header="Regional Lists">

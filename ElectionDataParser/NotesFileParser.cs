@@ -1,8 +1,4 @@
-﻿
-
-using ElectionDataTypes;
-
-namespace ElectionDataParser
+﻿namespace ElectionDataParser
 {
     using System;
     using System.Collections.Generic;
@@ -13,15 +9,18 @@ namespace ElectionDataParser
 
     using CsvHelper;
 
+    using ElectionDataTypes;
     using ElectionDataTypes.Interfaces;
     using ElectionDataTypes.Providers;
-
     using ElectionDataTypes.Settings;
-
-    public class NotesFileParser
+    
+    public class NotesFileParser : BaseParser
     {
         #region Constants
 
+        /// <summary>
+        /// The tag that after which party data is.
+        /// </summary>
         private const string DataStartTag = @"Party abbreviations";
 
         #endregion
@@ -33,48 +32,14 @@ namespace ElectionDataParser
         /// </summary>
         private PartiesProvider _partiesProvider;
 
-        /// <summary>
-        /// The full file path of file read.
-        /// </summary>
-        private string _filePath;
-
-        /// <summary>
-        /// The full file path of file read.
-        /// </summary>
-        private string _errorsFound;
-
-        /// <summary>
-        /// The full file path of file read.
-        /// </summary>
-        private bool _readSuccessfully;
-
         #endregion
 
-        #region Properties
+        #region Abstract Data and Methods Overloads
 
         /// <summary>
-        /// Gets the parties provider or null if it did not load.
+        /// Default filename to override
         /// </summary>
-        public IPartiesProvider PartiesProvider => _partiesProvider;
-
-        /// <summary>
-        /// Gets the full file path.
-        /// </summary>
-        public string FilePath => _filePath;
-
-        /// <summary>
-        /// Gets the full file path.
-        /// </summary>
-        public string ErrorsFound => _errorsFound;
-
-        /// <summary>
-        /// Gets the full file path.
-        /// </summary>
-        public bool ReadSuccessfully => _readSuccessfully;
-
-        #endregion
-
-        #region Public Methods
+        public override string DefaultFileName => DefaultFileNames.NotesFileName;
 
         /// <summary>
         /// Reads the data for this import from the file specified.
@@ -82,8 +47,9 @@ namespace ElectionDataParser
         /// <param name="filename">The file to read from.</param>
         /// <param name="errorMessage">The error message if unsuccessful.</param>
         /// <returns>True if read successfully, false otherwise.</returns>
-        public bool ReadFromFile(string filename, out string errorMessage)
+        public override bool ReadFromFile(string filename, out string errorMessage)
         {
+            _partiesProvider = new PartiesProvider();
             errorMessage = string.Empty;
 
             // Check the file exists.
@@ -150,21 +116,28 @@ namespace ElectionDataParser
 
         #endregion
 
+        #region Properties
 
+        /// <summary>
+        /// Gets the parties provider or null if it did not load.
+        /// </summary>
+        public IPartiesProvider PartiesProvider => _partiesProvider;
+
+        #endregion
+
+        #region Public Methods
+
+        #endregion
+        
         /// <summary>
         /// Loads the party notes from a file.
         /// </summary>
         /// <param name="resultsDir">The full path of the the results files.</param>
-        /// <param name="fileName">The full path of the notes notes file, or null if te default is to be read.</param>
+        /// <param name="fileName">The full path of the notes notes file, or null if the default is to be read.</param>
         public NotesFileParser(string resultsDir, string fileName = null)
         {
-            _errorsFound = string.Empty;
-            _readSuccessfully = false;
             _partiesProvider = new PartiesProvider();
-
-            _filePath = Path.Combine(resultsDir, fileName ?? DefaultFileNames.NotesFileName);
-
-            _readSuccessfully = ReadFromFile(_filePath, out _errorsFound);
+            Parse(resultsDir, fileName);
         }
     }
 }
