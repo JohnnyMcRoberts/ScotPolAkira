@@ -16,7 +16,7 @@ namespace ScotPolWpfApp.ViewModels
     {
         #region Constants
 
-        private readonly string[] _importersList = 
+        private readonly string[] _importersList =
         {
             "Import Notes",
             "Import Constituencies",
@@ -32,6 +32,8 @@ namespace ScotPolWpfApp.ViewModels
         private bool _hasNotes;
 
         private bool _hasConstituencies;
+
+        private bool _hasRegionalList;
 
         #endregion
 
@@ -104,7 +106,12 @@ namespace ScotPolWpfApp.ViewModels
         public bool HasNotes
         {
             get => _hasNotes;
-            set { _hasNotes = value; NotifyOfPropertyChange(() => HasNotes); }
+            set
+            {
+                _hasNotes = value;
+                NotifyOfPropertyChange(() => HasNotes);
+                NotifyOfPropertyChange(() => HasConstituencies);
+            }
         }
 
         /// <summary>
@@ -113,7 +120,26 @@ namespace ScotPolWpfApp.ViewModels
         public bool HasConstituencies
         {
             get => _hasConstituencies;
-            set { _hasConstituencies = value; NotifyOfPropertyChange(() => HasConstituencies); }
+            set
+            {
+                _hasConstituencies = value;
+                NotifyOfPropertyChange(() => HasConstituencies);
+                NotifyOfPropertyChange(() => HasNotesAndConstituencies);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if the the data model has constituencies results.
+        /// </summary>
+        public bool HasNotesAndConstituencies => _hasConstituencies && _hasNotes;
+
+        /// <summary>
+        /// Gets or sets if the the data model has constituencies results.
+        /// </summary>
+        public bool HasRegionalList
+        {
+            get => _hasRegionalList;
+            set { _hasRegionalList = value; NotifyOfPropertyChange(() => HasRegionalList); }
         }
 
         /// <summary>
@@ -125,6 +151,11 @@ namespace ScotPolWpfApp.ViewModels
         /// Gets the constituency result list observable for the data grid display.
         /// </summary>
         public ObservableCollection<ConstituencyResult> ConstituencyResultsList { get; }
+
+        /// <summary>
+        /// Gets the regional results list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<ConstituencyResult> RegionalResultsList { get; }
 
         #endregion
 
@@ -141,14 +172,14 @@ namespace ScotPolWpfApp.ViewModels
         /// Load the constituency results file command.
         /// </summary>
         public ICommand LoadConstituencyResultsCommand =>
-            _loadConstituencyResultsCommand ?? 
+            _loadConstituencyResultsCommand ??
                 (_loadConstituencyResultsCommand = new CommandHandler(LoadConstituencyResultsCommandAction, true));
 
         /// <summary>
         /// Load the list results command.
         /// </summary>
         public ICommand LoadListResultsCommand =>
-            _loadListResultsCommand ?? 
+            _loadListResultsCommand ??
                 (_loadListResultsCommand = new CommandHandler(LoadListResultsCommandAction, true));
 
         #endregion
@@ -185,7 +216,7 @@ namespace ScotPolWpfApp.ViewModels
         /// </summary>
         private void LoadConstituencyResultsCommandAction()
         {
-            Console.WriteLine("LoadNotesCommandAction");
+            Console.WriteLine("LoadConstituencyResultsCommandAction");
 
             ConstituencyResultsFileParser parser =
                 new ConstituencyResultsFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
@@ -209,22 +240,21 @@ namespace ScotPolWpfApp.ViewModels
         /// </summary>
         private void LoadListResultsCommandAction()
         {
-            Console.WriteLine("LoadNotesCommandAction");
+            Console.WriteLine("LoadListResultsCommandAction");
 
-            NotesFileParser parser =
-                new NotesFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
+            ListResultsFileParser parser =
+                new ListResultsFileParser(ConfigurationSettings.DatabaseSettings.ResultsDirectory);
 
-            NotesFile = parser.FilePath;
-            HasNotes = parser.ReadSuccessfully;
+            RegionalListsFile = parser.FilePath;
+            HasRegionalList = parser.ReadSuccessfully;
 
             if (HasNotes)
             {
+                RegionalResultsList.Clear();
 
-                PartyNotesList.Clear();
-
-                foreach (string abbreviation in parser.PartiesProvider.PartyAbbreviations.OrderBy(x => x))
+                foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
                 {
-                    PartyNotesList.Add(new PartyNote { Abbreviation = abbreviation, FullName = parser.PartiesProvider.PartiesByAbbreviation[abbreviation] });
+                    RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
                 }
             }
         }
@@ -243,9 +273,11 @@ namespace ScotPolWpfApp.ViewModels
 
             _hasNotes = false;
             _hasConstituencies = false;
+            _hasRegionalList = false;
 
             PartyNotesList = new ObservableCollection<PartyNote>();
             ConstituencyResultsList = new ObservableCollection<ConstituencyResult>();
+            RegionalResultsList = new ObservableCollection<ConstituencyResult>();
         }
     }
 }

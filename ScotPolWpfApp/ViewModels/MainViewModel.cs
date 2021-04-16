@@ -14,7 +14,8 @@ namespace ScotPolWpfApp.ViewModels
 
         private string _windowTitle = WindowTitleDefault;
 
-        private ResultsImporterViewModel _resultsImporterViewModel = new ResultsImporterViewModel();
+        private ResultsImporterViewModel _resultsImporterViewModel = 
+            new ResultsImporterViewModel();
 
         #endregion
 

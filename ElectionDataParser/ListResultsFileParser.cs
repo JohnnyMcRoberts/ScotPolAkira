@@ -14,14 +14,14 @@
     using ElectionDataTypes.Providers;
     using ElectionDataTypes.Settings;
 
-    public class ConstituencyResultsFileParser : BaseParser
+    public class ListResultsFileParser : BaseParser
     {
         #region Abstract Data and Methods Overloads
 
         /// <summary>
         /// Default filename to override
         /// </summary>
-        public override string DefaultFileName => DefaultFileNames.ConstituenciesFileName;
+        public override string DefaultFileName => DefaultFileNames.RegionalListsFileName;
 
         /// <summary>
         /// Reads the data for this import from the file specified.
@@ -105,7 +105,25 @@
         /// The tag that after which party data is.
         /// </summary>
         public static readonly string[] PartyNames =
-            { @"CON", @"LAB", @"LIB", @"SNP", @"IND", @"TUSC", @"SGRN", @"Others" };
+        {
+            @"CON",
+            @"LAB",
+            @"LIB",
+            @"SNP",
+            @"SGRN", 
+            @"UKIP",
+            @"IND", 
+            @"SOL", 
+            @"RISE",
+            @"CHP",
+            @"WEP", 
+            @"SLBR",
+            @"ABBUP", 
+            @"COMP",
+            @"NF",
+            @"ANWP",
+            @"Others"
+        };
 
         #endregion
 
@@ -132,7 +150,7 @@
         /// </summary>
         /// <param name="resultsDir">The full path of the the results files.</param>
         /// <param name="fileName">The full path of the notes notes file, or null if the default is to be read.</param>
-        public ConstituencyResultsFileParser(string resultsDir, string fileName = null)
+        public ListResultsFileParser(string resultsDir, string fileName = null)
         {
             Parse(resultsDir, fileName);
         }

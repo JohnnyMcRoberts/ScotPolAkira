@@ -39,7 +39,7 @@
                     x:Name="LoadListResults" 
                     Content="{Binding LoadListResultsText}"  
                     Command="{Binding Path=LoadListResultsCommand}"
-                    IsEnabled="{Binding HasNotes}"/>
+                    IsEnabled="{Binding HasNotesAndConstituencies}"/>
 
             <Grid Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3">
 
@@ -135,6 +135,40 @@
 
                 </TabItem>
                 <TabItem Header="Regional Lists">
+
+                    <DataGrid AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=RegionalResultsList, Mode=OneWay}"
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Constituency" 
+                                                Binding="{Binding Constituency}" 
+                                                MinWidth="150"/>
+
+                            <DataGridTextColumn Header="Region" 
+                                                Binding="{Binding Region}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Winning Party" 
+                                                Binding="{Binding Win}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Second Party" 
+                                                Binding="{Binding Second}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Majority" 
+                                                Binding="{Binding Majority}" 
+                                                Width="Auto"/>
+
+                            <DataGridTextColumn Header="Majority (%)" 
+                                                Binding="{Binding MajorityPercentage}" 
+                                                Width="Auto"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
 
                 </TabItem>
             </TabControl>
