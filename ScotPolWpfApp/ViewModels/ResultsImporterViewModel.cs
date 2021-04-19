@@ -59,6 +59,11 @@ namespace ScotPolWpfApp.ViewModels
         #region Properties
 
         /// <summary>
+        /// Gets or sets the election results for a year.
+        /// </summary>
+        public ElectionResult ElectionResults { get; set; }
+
+        /// <summary>
         /// Gets the load notes text.
         /// </summary>
         public string LoadNotesText => _importersList[0];
@@ -201,7 +206,7 @@ namespace ScotPolWpfApp.ViewModels
 
             if (HasNotes)
             {
-
+                ElectionResults.Parties = parser.PartiesProvider;
                 PartyNotesList.Clear();
 
                 foreach (string abbreviation in parser.PartiesProvider.PartyAbbreviations.OrderBy(x => x))
@@ -226,6 +231,7 @@ namespace ScotPolWpfApp.ViewModels
 
             if (HasConstituencies)
             {
+                ElectionResults.FirstVotes = parser.ConstituencyResultProvider;
                 ConstituencyResultsList.Clear();
 
                 foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
@@ -250,6 +256,7 @@ namespace ScotPolWpfApp.ViewModels
 
             if (HasNotes)
             {
+                ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
                 RegionalResultsList.Clear();
 
                 foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))

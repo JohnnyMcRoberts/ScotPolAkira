@@ -171,7 +171,7 @@
             constituencyResult.PartyResults = 
                 GetPartyConstituencyResults(csv, partyNames, constituencyResult.TotalValidVotesCast);
 
-            List<PartyConstituencyResult> sortedResults =
+            List<PartyResult> sortedResults =
                 constituencyResult.PartyResults.OrderByDescending(x => x.Votes).ToList();
 
             constituencyResult.Win = sortedResults[0].PartyAbbreviation;
@@ -190,18 +190,18 @@
         /// <param name="partyNames">The party names.</param>
         /// <param name="totalVotesCast">The total votes cast in the constituency.</param>
         /// <returns>The parsed constituency result.</returns>
-        public static List<PartyConstituencyResult> GetPartyConstituencyResults(
+        public static List<PartyResult> GetPartyConstituencyResults(
             CsvReader csv, 
             string[] partyNames,
             int totalVotesCast)
         {
             int partiesOffset = 9;
             float percentageMultiplier = 100f / totalVotesCast;
-            List<PartyConstituencyResult> partyResults = new List<PartyConstituencyResult>();
+            List<PartyResult> partyResults = new List<PartyResult>();
             for (int i = 0; i < partyNames.Length; i++)
             {
-                PartyConstituencyResult partyResult =
-                    new PartyConstituencyResult
+                PartyResult partyResult =
+                    new PartyResult
                     {
                         PartyAbbreviation = partyNames[i],
                         Votes =

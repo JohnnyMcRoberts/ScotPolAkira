@@ -1,4 +1,5 @@
-﻿using ElectionDataTypes.Settings;
+﻿using ElectionDataTypes;
+using ElectionDataTypes.Settings;
 
 namespace ScotPolWpfApp.ViewModels
 {
@@ -14,6 +15,9 @@ namespace ScotPolWpfApp.ViewModels
 
         private string _windowTitle = WindowTitleDefault;
 
+        private readonly ElectionResult _electionResult = 
+            new ElectionResult();
+
         private ResultsImporterViewModel _resultsImporterViewModel = 
             new ResultsImporterViewModel();
 
@@ -23,7 +27,7 @@ namespace ScotPolWpfApp.ViewModels
 
         public string WindowTitle
         {
-            get { return _windowTitle; }
+            get => _windowTitle;
             set
             {
                 _windowTitle = value;
@@ -45,7 +49,11 @@ namespace ScotPolWpfApp.ViewModels
 
         public MainViewModel(DatabaseSettings dbSettings)
         {
-            ResultsImporter = new ResultsImporterViewModel();
+            ResultsImporter = 
+                new ResultsImporterViewModel
+                {
+                    ElectionResults = _electionResult
+                };
         }
     }
 }

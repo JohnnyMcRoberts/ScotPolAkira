@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ElectionDataTypes
+﻿namespace ElectionDataTypes
 {
-    public class PartyConstituencyResult
+    public class PartyResult
     {
         public string PartyAbbreviation { get; set; }
         public int Votes { get; set; }
