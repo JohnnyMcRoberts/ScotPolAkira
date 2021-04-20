@@ -8,7 +8,7 @@
 
     using CsvHelper;
 
-    using ElectionDataTypes;
+    using ElectionDataTypes.Results;
 
     public abstract class BaseParser
     {

@@ -1,4 +1,4 @@
-﻿namespace ElectionDataTypes
+﻿namespace ElectionDataTypes.Results
 {
     /// <summary>
     /// This is note for a party from the data file

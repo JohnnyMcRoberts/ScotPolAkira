@@ -9,9 +9,9 @@
 
     using CsvHelper;
 
-    using ElectionDataTypes;
     using ElectionDataTypes.Interfaces;
     using ElectionDataTypes.Providers;
+    using ElectionDataTypes.Results;
     using ElectionDataTypes.Settings;
     
     public class NotesFileParser : BaseParser

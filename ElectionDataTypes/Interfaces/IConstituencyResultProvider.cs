@@ -1,7 +1,9 @@
 ﻿namespace ElectionDataTypes.Interfaces
 {
     using System.Collections.Generic;
-
+    
+    using Results;
+    
     public interface IConstituencyResultProvider
     {
         /// <summary>

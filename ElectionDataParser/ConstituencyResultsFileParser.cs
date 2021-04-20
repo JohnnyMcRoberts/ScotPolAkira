@@ -9,7 +9,7 @@
 
     using CsvHelper;
 
-    using ElectionDataTypes;
+    using ElectionDataTypes.Results;
     using ElectionDataTypes.Interfaces;
     using ElectionDataTypes.Providers;
     using ElectionDataTypes.Settings;

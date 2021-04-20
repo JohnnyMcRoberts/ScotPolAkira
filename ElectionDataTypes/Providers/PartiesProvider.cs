@@ -1,11 +1,10 @@
-﻿using System.Linq;
-
-namespace ElectionDataTypes.Providers
+﻿namespace ElectionDataTypes.Providers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
-    using ElectionDataTypes.Interfaces;
+    using System.Linq;
+
+    using Interfaces;
+    using Results;
 
     public class PartiesProvider: IPartiesProvider
     {

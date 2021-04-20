@@ -1,8 +1,8 @@
-﻿using ElectionDataTypes;
-using ElectionDataTypes.Settings;
-
-namespace ScotPolWpfApp.ViewModels
+﻿namespace ScotPolWpfApp.ViewModels
 {
+    using ElectionDataTypes.Results;
+    using ElectionDataTypes.Settings;
+
     public class MainViewModel : Caliburn.Micro.PropertyChangedBase
     {
         #region Constants

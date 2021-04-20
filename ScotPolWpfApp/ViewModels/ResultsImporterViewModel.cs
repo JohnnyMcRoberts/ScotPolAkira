@@ -1,13 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using ElectionDataParser;
-using ElectionDataTypes;
-using ScotPolWpfApp.Models;
-
-namespace ScotPolWpfApp.ViewModels
+﻿namespace ScotPolWpfApp.ViewModels
 {
     using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
+
+    using ElectionDataParser;
+
+    using ElectionDataTypes.Results;
+
+    using Models;
 
     /// <summary>
     /// This class will open the main results files and process the data from the CSV files.

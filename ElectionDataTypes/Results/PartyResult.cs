@@ -1,4 +1,4 @@
-﻿namespace ElectionDataTypes
+﻿namespace ElectionDataTypes.Results
 {
     public class PartyResult
     {
