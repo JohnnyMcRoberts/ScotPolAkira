@@ -140,8 +140,19 @@
             List<ConstituencyResult> secondVoteResults)
         {
             Region = regionName;
-            FirstVoteResults = firstVoteResults;
-            SecondVoteResults = secondVoteResults;
+
+            // Get a copy of the results.
+            FirstVoteResults = new List<ConstituencyResult>();
+            foreach (ConstituencyResult firstVoteResult in firstVoteResults)
+            {
+                FirstVoteResults.Add(new ConstituencyResult(firstVoteResult));
+            }
+
+            SecondVoteResults = new List<ConstituencyResult>();
+            foreach (ConstituencyResult secondVoteResult in secondVoteResults)
+            {
+                SecondVoteResults.Add(new ConstituencyResult(secondVoteResult));
+            }
 
             FirstVoteSeatsByParty = new Dictionary<string, List<ConstituencyResult>>();
             SecondVoteByParty = new Dictionary<string, PartyResult>();
@@ -160,7 +171,7 @@
             }
 
             // Get the totals from the second votes.
-            foreach (ConstituencyResult constituency in secondVoteResults)
+            foreach (ConstituencyResult constituency in SecondVoteResults)
             {
                 AddListConstituencyToTotals(constituency);
             }

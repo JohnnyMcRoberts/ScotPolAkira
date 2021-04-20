@@ -28,5 +28,24 @@
 
             PartyResults = new List<PartyResult>();
         }
+
+        protected BaseResult(BaseResult src)
+        {
+            Region = src.Region;
+
+            Electorate = src.Electorate;
+            TotalBallotsAtTheCount = src.TotalBallotsAtTheCount;
+            TotalValidVotesCast = src.TotalValidVotesCast;
+            RejectedBallots = src.RejectedBallots;
+
+            BallotBoxTurnoutPercentage = src.BallotBoxTurnoutPercentage;
+            RejectedBallotsPercentage = src.RejectedBallotsPercentage;
+
+            PartyResults = new List<PartyResult>();
+            foreach (PartyResult result in src.PartyResults)
+            {
+                PartyResults.Add(new PartyResult(result));
+            }
+        }
     }
 }

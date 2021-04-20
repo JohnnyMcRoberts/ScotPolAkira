@@ -20,5 +20,16 @@
             Majority = 0;
             MajorityPercentage = 0f;
         }
+
+        public ConstituencyResult(ConstituencyResult src) : base(src)
+        {
+            Code = src.Code;
+            Constituency = src.Constituency;
+
+            Win = src.Win;
+            Second = src.Second;
+            Majority = src.Majority;
+            MajorityPercentage = src.MajorityPercentage;
+        }
     }
 }

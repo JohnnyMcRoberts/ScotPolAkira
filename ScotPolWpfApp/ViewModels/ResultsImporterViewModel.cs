@@ -164,6 +164,11 @@
         /// </summary>
         public ObservableCollection<ConstituencyResult> RegionalResultsList { get; }
 
+        /// <summary>
+        /// Gets the party votes and results list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<PartyVote> PartyResultsList { get; }
+
         #endregion
 
         #region Commands
@@ -256,7 +261,7 @@
             RegionalListsFile = parser.FilePath;
             HasRegionalList = parser.ReadSuccessfully;
 
-            if (HasNotes)
+            if (HasRegionalList)
             {
                 ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
                 RegionalResultsList.Clear();
@@ -264,6 +269,12 @@
                 foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
                 {
                     RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
+                }
+
+                PartyResultsList.Clear();
+                foreach (PartyVote partyVote in ElectionResults.PartyVotes)
+                {
+                    PartyResultsList.Add(partyVote);
                 }
             }
         }
@@ -287,6 +298,7 @@
             PartyNotesList = new ObservableCollection<PartyNote>();
             ConstituencyResultsList = new ObservableCollection<ConstituencyResult>();
             RegionalResultsList = new ObservableCollection<ConstituencyResult>();
+            PartyResultsList = new ObservableCollection<PartyVote>();
         }
     }
 }
