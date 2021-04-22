@@ -34,13 +34,6 @@
             _constituencyResultProvider = new ConstituencyResultProvider();
             errorMessage = string.Empty;
 
-            // Check the file exists.
-            if (!File.Exists(filename))
-            {
-                errorMessage = $"File {filename} does not exist";
-                return false;
-            }
-
             // Try to deserialize the file into the constituency results.
             List<ConstituencyResult> constituencyResults = new List<ConstituencyResult>();
 

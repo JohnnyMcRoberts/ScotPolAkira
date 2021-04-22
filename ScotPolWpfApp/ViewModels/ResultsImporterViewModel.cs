@@ -22,7 +22,8 @@
         {
             "Import Notes",
             "Import Constituencies",
-            "Import Regional Lists"
+            "Import Regional Lists",
+            "Import Polls"
         };
 
         private string _notesFile;
@@ -30,6 +31,8 @@
         private string _constituenciesFile;
 
         private string _regionalListsFile;
+
+        private string _pollsFile;
 
         private bool _hasNotes;
 
@@ -56,6 +59,11 @@
         /// </summary>
         private ICommand _loadListResultsCommand;
 
+        /// <summary>
+        /// The load polls command.
+        /// </summary>
+        private ICommand _loadPollsCommand;
+
         #endregion
 
         #region Properties
@@ -79,6 +87,11 @@
         /// Gets the load list results text.
         /// </summary>
         public string LoadListResultsText => _importersList[2];
+
+        /// <summary>
+        /// Gets the load polls text.
+        /// </summary>
+        public string LoadPollsText => _importersList[3];
 
         /// <summary>
         /// Gets or sets the notes file name.
@@ -105,6 +118,15 @@
         {
             get => _regionalListsFile;
             set { _regionalListsFile = value; NotifyOfPropertyChange(() => RegionalListsFile); }
+        }
+
+        /// <summary>
+        /// Gets or sets the polls file name.
+        /// </summary>
+        public string PollsFile
+        {
+            get => _pollsFile;
+            set { _pollsFile = value; NotifyOfPropertyChange(() => PollsFile); }
         }
 
         /// <summary>
@@ -194,6 +216,13 @@
             _loadListResultsCommand ??
                 (_loadListResultsCommand = new CommandHandler(LoadListResultsCommandAction, true));
 
+        /// <summary>
+        /// Load the polls command.
+        /// </summary>
+        public ICommand LoadPollsCommand =>
+            _loadPollsCommand ??
+            (_loadPollsCommand = new CommandHandler(LoadPollsCommandAction, true));
+
         #endregion
 
         #region Command handlers
@@ -277,6 +306,37 @@
                     PartyResultsList.Add(partyVote);
                 }
             }
+        }
+
+        /// <summary>
+        /// The load list results file command action.
+        /// </summary>
+        private void LoadPollsCommandAction()
+        {
+            Console.WriteLine("LoadPollsCommandAction");
+
+            PollingFileParser parser =
+                new PollingFileParser(ConfigurationSettings.DatabaseSettings.PredictionsDirectory);
+
+            PollsFile = parser.FilePath;
+            //HasRegionalList = parser.ReadSuccessfully;
+
+            //if (HasRegionalList)
+            //{
+            //    ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
+            //    RegionalResultsList.Clear();
+
+            //    foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
+            //    {
+            //        RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
+            //    }
+
+            //    PartyResultsList.Clear();
+            //    foreach (PartyVote partyVote in ElectionResults.PartyVotes)
+            //    {
+            //        PartyResultsList.Add(partyVote);
+            //    }
+            //}
         }
 
         #endregion

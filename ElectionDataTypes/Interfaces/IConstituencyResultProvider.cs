@@ -12,7 +12,7 @@
         Dictionary<string, ConstituencyResult> ResultsByCode { get; }
 
         /// <summary>
-        /// Getsthe constituency results by constituency name.
+        /// Gets the constituency results by constituency name.
         /// </summary>
         Dictionary<string, ConstituencyResult> ResultsByName { get; }
 

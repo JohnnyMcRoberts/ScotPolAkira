@@ -52,13 +52,6 @@
             _partiesProvider = new PartiesProvider();
             errorMessage = string.Empty;
 
-            // Check the file exists.
-            if (!File.Exists(filename))
-            {
-                errorMessage = $"File {filename} does not exist";
-                return false;
-            }
-
             // Try to deserialize the file into the party notes.
             List<PartyNote> partyNotes = new List<PartyNote>();
 
@@ -91,7 +84,6 @@
 
                         // if here on a line with data after the start tag has been found so get the abbreviation
                         string abbreviation = csv.GetField<string>(1);
-
 
                         if (!string.IsNullOrWhiteSpace(abbreviation))
                         {

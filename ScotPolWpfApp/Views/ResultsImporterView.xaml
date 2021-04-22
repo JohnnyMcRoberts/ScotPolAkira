@@ -18,10 +18,11 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="90"/>
+                <RowDefinition Height="120"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -40,10 +41,16 @@
                     Content="{Binding LoadListResultsText}"  
                     Command="{Binding Path=LoadListResultsCommand}"
                     IsEnabled="{Binding HasNotesAndConstituencies}"/>
+            <Button Grid.Column="3" Grid.Row="0" 
+                    x:Name="LoadPolls" 
+                    Content="{Binding LoadPollsText}"  
+                    Command="{Binding Path=LoadPollsCommand}"
+                    IsEnabled="{Binding HasNotesAndConstituencies}"/>
 
-            <Grid Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="4">
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
@@ -74,9 +81,15 @@
                      Text="{Binding RegionalListsFile, Mode=OneWay}" VerticalAlignment="Center" 
                      Margin="10,0,10,0"/>
 
+                <Label   Grid.Row="3"  Grid.Column="0">Polls file:</Label>
+                <TextBox Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Stretch"  
+                         Height="23" TextWrapping="Wrap" IsReadOnly="True"  
+                         Text="{Binding PollsFile, Mode=OneWay}" VerticalAlignment="Center" 
+                         Margin="10,0,10,0"/>
+
             </Grid>
 
-            <TabControl  Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" >
+            <TabControl  Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="4" >
                 <TabItem Header="Party Names and Abbreviations">
 
                     <DataGrid AutoGenerateColumns="False"

@@ -223,14 +223,21 @@
         /// <summary>
         /// Reads the data for this import from the file specified.
         /// </summary>
-        /// <param name="resultsDir">The full path of the the results files.</param>
+        /// <param name="sourceDir">The full path of the the results files.</param>
         /// <param name="fileName">The full path of the  file, or null if the default is to be read.</param>
-        public void Parse(string resultsDir, string fileName = null)
+        public void Parse(string sourceDir, string fileName = null)
         {
             ErrorsFound = string.Empty;
             ReadSuccessfully = false;
 
-            FilePath = Path.Combine(resultsDir, fileName ?? DefaultFileName);
+            FilePath = Path.Combine(sourceDir, fileName ?? DefaultFileName);
+
+            // Check the file exists.
+            if (!File.Exists(FilePath))
+            {
+                ErrorsFound = $"File {FilePath} does not exist";
+                return;
+            }
 
             ReadSuccessfully = ReadFromFile(FilePath, out string errorsFound);
             ErrorsFound = errorsFound;
