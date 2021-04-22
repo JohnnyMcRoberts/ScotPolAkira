@@ -7,11 +7,23 @@
 
     public class OpinionPoll
     {
+        private string _link = string.Empty;
+
         public string PollingCompany { get; set; }
 
         public DateTime PublicationDate { get; set; }
 
-        public string Link { get; set; }
+        public string Link
+        {
+            get => _link;
+            set
+            {
+                _link = value;
+                LinkUri = string.IsNullOrWhiteSpace(_link) ? null : new Uri(_link);
+            }
+        }
+
+        public Uri LinkUri { get; private set; }
 
         public List<PartyResult> ConstituencyPredictions { get; set; }
 

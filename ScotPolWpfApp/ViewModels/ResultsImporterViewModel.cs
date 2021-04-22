@@ -1,4 +1,6 @@
-﻿namespace ScotPolWpfApp.ViewModels
+﻿using ElectionDataTypes.Polling;
+
+namespace ScotPolWpfApp.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
@@ -40,6 +42,8 @@
 
         private bool _hasRegionalList;
 
+        private bool _hasPolls;
+
         #endregion
 
         #region Private Data
@@ -72,6 +76,11 @@
         /// Gets or sets the election results for a year.
         /// </summary>
         public ElectionResult ElectionResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets the election predictions for a set of polls.
+        /// </summary>
+        public ElectionPredictionSet ElectionPredictions { get; set; }
 
         /// <summary>
         /// Gets the load notes text.
@@ -120,6 +129,7 @@
             set { _regionalListsFile = value; NotifyOfPropertyChange(() => RegionalListsFile); }
         }
 
+
         /// <summary>
         /// Gets or sets the polls file name.
         /// </summary>
@@ -163,12 +173,21 @@
         public bool HasNotesAndConstituencies => _hasConstituencies && _hasNotes;
 
         /// <summary>
-        /// Gets or sets if the the data model has constituencies results.
+        /// Gets or sets if the the data model has list results.
         /// </summary>
         public bool HasRegionalList
         {
             get => _hasRegionalList;
             set { _hasRegionalList = value; NotifyOfPropertyChange(() => HasRegionalList); }
+        }
+
+        /// <summary>
+        /// Gets or sets if the the data model has list results.
+        /// </summary>
+        public bool HasPolls
+        {
+            get => _hasPolls;
+            set { _hasPolls = value; NotifyOfPropertyChange(() => HasPolls); }
         }
 
         /// <summary>
@@ -191,6 +210,10 @@
         /// </summary>
         public ObservableCollection<PartyVote> PartyResultsList { get; }
 
+        /// <summary>
+        /// Gets the opinion polls list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<OpinionPoll> OpinionPollsList { get; }
         #endregion
 
         #region Commands
@@ -199,8 +222,8 @@
         /// Load the notes command.
         /// </summary>
         public ICommand LoadNotesCommand =>
-            _loadNotesCommand ??
-                (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
+                    _loadNotesCommand ??
+                        (_loadNotesCommand = new CommandHandler(LoadNotesCommandAction, true));
 
         /// <summary>
         /// Load the constituency results file command.
@@ -319,24 +342,32 @@
                 new PollingFileParser(ConfigurationSettings.DatabaseSettings.PredictionsDirectory);
 
             PollsFile = parser.FilePath;
-            //HasRegionalList = parser.ReadSuccessfully;
+            HasPolls = parser.ReadSuccessfully;
 
-            //if (HasRegionalList)
-            //{
-            //    ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
-            //    RegionalResultsList.Clear();
+            if (HasRegionalList)
+            {
+                ElectionPredictions.UpdatePredictions(parser.PollsProvider, ElectionResults);
 
-            //    foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
-            //    {
-            //        RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
-            //    }
+                OpinionPollsList.Clear();
+                foreach (OpinionPoll poll in parser.PollsProvider.PollsByDate)
+                {
+                    OpinionPollsList.Add(new OpinionPoll(poll));
+                }
 
-            //    PartyResultsList.Clear();
-            //    foreach (PartyVote partyVote in ElectionResults.PartyVotes)
-            //    {
-            //        PartyResultsList.Add(partyVote);
-            //    }
-            //}
+                //    ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
+                //    RegionalResultsList.Clear();
+
+                //    foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
+                //    {
+                //        RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
+                //    }
+
+                //    PartyResultsList.Clear();
+                //    foreach (PartyVote partyVote in ElectionResults.PartyVotes)
+                //    {
+                //        PartyResultsList.Add(partyVote);
+                //    }
+            }
         }
 
         #endregion
@@ -359,6 +390,7 @@
             ConstituencyResultsList = new ObservableCollection<ConstituencyResult>();
             RegionalResultsList = new ObservableCollection<ConstituencyResult>();
             PartyResultsList = new ObservableCollection<PartyVote>();
+            OpinionPollsList = new ObservableCollection<OpinionPoll>();
         }
     }
 }

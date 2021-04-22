@@ -1,5 +1,6 @@
 ﻿namespace ScotPolWpfApp.ViewModels
 {
+    using ElectionDataTypes.Polling;
     using ElectionDataTypes.Results;
     using ElectionDataTypes.Settings;
 
@@ -15,8 +16,11 @@
 
         private string _windowTitle = WindowTitleDefault;
 
-        private readonly ElectionResult _electionResult = 
+        private readonly ElectionResult _electionResult =
             new ElectionResult();
+
+        private readonly ElectionPredictionSet _electionPredictions =
+            new ElectionPredictionSet();
 
         private ResultsImporterViewModel _resultsImporterViewModel = 
             new ResultsImporterViewModel();
@@ -52,7 +56,8 @@
             ResultsImporter = 
                 new ResultsImporterViewModel
                 {
-                    ElectionResults = _electionResult
+                    ElectionResults = _electionResult,
+                    ElectionPredictions = _electionPredictions
                 };
         }
     }
