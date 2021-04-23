@@ -27,5 +27,17 @@
             PercentageConstituencyVote = 0f;
             PercentageListVote = 0f;
         }
+
+        public PartyVote(PartyVote src)
+        {
+            Abbreviation = src.Abbreviation;
+            FullName = src.FullName;
+
+            TotalConstituencyVote = src.TotalConstituencyVote;
+            TotalListVote = src.TotalListVote;
+
+            PercentageConstituencyVote = src.PercentageConstituencyVote;
+            PercentageListVote = src.PercentageListVote;
+        }
     }
 }

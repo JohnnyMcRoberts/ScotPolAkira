@@ -232,7 +232,7 @@
 
                 </TabItem>
 
-                <TabItem Header="Polls and Predictions">
+                <TabItem Header="Polls">
 
                     <DataGrid AutoGenerateColumns="False"
                               ItemsSource="{Binding Path=OpinionPollsList, Mode=OneWay}"
@@ -254,7 +254,6 @@
                         </DataGrid.Columns>
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
-
 
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -314,6 +313,98 @@
                     </DataGrid>
 
                 </TabItem>
+
+                <TabItem Header="Predictions">
+
+                    <DataGrid AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=ElectionPredictionsList, Mode=OneWay}"
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Polling Company" 
+                                                Binding="{Binding PollingCompany}" 
+                                                MinWidth="150"/>
+
+                            <DataGridTextColumn Header="Date" 
+                                                Binding="{Binding PublishedDate, StringFormat='yyyy-MM-dd'}" 
+                                                Width="Auto"/>
+
+                            <DataGridHyperlinkColumn Header="Link" Binding="{Binding LinkUri}"
+                                                     Width="Auto"/>
+
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+
+                                    <Label Grid.Row="0">Constituency Polling</Label>
+
+                                    <DataGrid Grid.Row="1"
+                                        AutoGenerateColumns="False"
+                                              ItemsSource="{Binding PartyPredictions, Mode=OneWay}"
+                                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                                        <DataGrid.Columns>
+
+                                            <DataGridTextColumn Header="Abbreviation" 
+                                                                Binding="{Binding Abbreviation}" 
+                                                                MinWidth="150"/>
+
+                                            <DataGridTextColumn Header="Constituency Percentage" 
+                                                                Binding="{Binding PercentageConstituencyVote}" 
+                                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="Constituency Percentage Change" 
+                                                                Binding="{Binding PercentageConstituencyVoteSwing}" 
+                                                                Width="Auto"/>
+
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+
+                                    <Label Grid.Row="2">List Polling</Label>
+
+                                    <DataGrid Grid.Row="3" AutoGenerateColumns="False"
+                                              ItemsSource="{Binding PartyPredictions, Mode=OneWay}"
+                                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                                        <DataGrid.Columns>
+
+                                            <DataGridTextColumn Header="Abbreviation" 
+                                                                Binding="{Binding Abbreviation}" 
+                                                                MinWidth="150"/>
+
+                                            <DataGridTextColumn Header="List Percentage" 
+                                                                Binding="{Binding PercentageListVote}" 
+                                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="List Percentage" 
+                                                                Binding="{Binding PercentageListVoteSwing}" 
+                                                                Width="Auto"/>
+
+                                            
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+
+
+
+
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+
+                </TabItem>
+
 
             </TabControl>
 

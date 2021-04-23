@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace ElectionDataTypes.Polling
+﻿namespace ElectionDataTypes.Polling
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Results;
 
@@ -21,11 +20,12 @@ namespace ElectionDataTypes.Polling
 
         public ElectionResult PredictedResult { get; set; }
 
-        public DateTime PublishedDate => OpinionPoll.PublicationDate;
-        public string LinkTime => OpinionPoll.Link;
-        public string PollingCompany => OpinionPoll.PollingCompany;
+        public List<PartyVoteSwing> PartyPredictions { get; set; }
 
-        public List<PartyVote> PartyPredictions { get; set; }
+        public DateTime PublishedDate => OpinionPoll.PublicationDate;
+        public string Link => OpinionPoll.Link;
+        public Uri LinkUri => OpinionPoll.LinkUri;
+        public string PollingCompany => OpinionPoll.PollingCompany;
 
         #endregion region
 
@@ -97,7 +97,7 @@ namespace ElectionDataTypes.Polling
             PartyPredictions.Clear();
             foreach (PartyVote partyVote in partyVotes)
             {
-                PartyPredictions.Add(partyVote);
+                PartyPredictions.Add(new PartyVoteSwing(partyVote, PreviousResult));
             }
         }
 
@@ -110,8 +110,21 @@ namespace ElectionDataTypes.Polling
             PreviousResult = previousResult;
             OpinionPoll = opinionPoll;
 
-            PartyPredictions = new List<PartyVote>();
+            PartyPredictions = new List<PartyVoteSwing>();
             SetupPartyPredictions();
+        }
+
+        public ElectionPrediction(ElectionPrediction src)
+        {
+            PreviousResult = src.PreviousResult;
+            OpinionPoll = new OpinionPoll(src.OpinionPoll);
+            PredictedResult = src.PredictedResult;
+
+            PartyPredictions = new List<PartyVoteSwing>();
+            foreach (PartyVoteSwing partyPrediction in src.PartyPredictions)
+            {
+                PartyPredictions.Add(new PartyVoteSwing(partyPrediction));
+            }
         }
     }
 }

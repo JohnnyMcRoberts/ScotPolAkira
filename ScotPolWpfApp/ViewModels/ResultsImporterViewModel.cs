@@ -214,6 +214,12 @@ namespace ScotPolWpfApp.ViewModels
         /// Gets the opinion polls list observable for the data grid display.
         /// </summary>
         public ObservableCollection<OpinionPoll> OpinionPollsList { get; }
+
+        /// <summary>
+        /// Gets the opinion poll predictions list observable for the data grid display.
+        /// </summary>
+        public ObservableCollection<ElectionPrediction> ElectionPredictionsList { get; }
+        
         #endregion
 
         #region Commands
@@ -354,19 +360,11 @@ namespace ScotPolWpfApp.ViewModels
                     OpinionPollsList.Add(new OpinionPoll(poll));
                 }
 
-                //    ElectionResults.SecondVotes = parser.ConstituencyResultProvider;
-                //    RegionalResultsList.Clear();
-
-                //    foreach (string name in parser.ConstituencyResultProvider.ConstituencyNames.OrderBy(x => x))
-                //    {
-                //        RegionalResultsList.Add(parser.ConstituencyResultProvider.ResultsByName[name]);
-                //    }
-
-                //    PartyResultsList.Clear();
-                //    foreach (PartyVote partyVote in ElectionResults.PartyVotes)
-                //    {
-                //        PartyResultsList.Add(partyVote);
-                //    }
+                ElectionPredictionsList.Clear();
+                foreach (ElectionPrediction predictions in ElectionPredictions.Predictions)
+                {
+                    ElectionPredictionsList.Add(new ElectionPrediction(predictions));
+                }
             }
         }
 
@@ -391,6 +389,7 @@ namespace ScotPolWpfApp.ViewModels
             RegionalResultsList = new ObservableCollection<ConstituencyResult>();
             PartyResultsList = new ObservableCollection<PartyVote>();
             OpinionPollsList = new ObservableCollection<OpinionPoll>();
+            ElectionPredictionsList = new ObservableCollection<ElectionPrediction>();
         }
     }
 }

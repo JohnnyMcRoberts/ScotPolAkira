@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using ElectionDataTypes.Interfaces;
-using ElectionDataTypes.Results;
-
-namespace ElectionDataTypes.Polling
+﻿namespace ElectionDataTypes.Polling
 {
+    using System.Collections.Generic;
+    
+    using Interfaces;
+    using Results;
+    
     public class ElectionPredictionSet
     {
         public List<ElectionPrediction> Predictions { get; set; }
@@ -17,7 +18,6 @@ namespace ElectionDataTypes.Polling
                 Predictions.Add(new ElectionPrediction(previousElectionResult, poll));
             }
         }
-
 
         public ElectionPredictionSet()
         {
