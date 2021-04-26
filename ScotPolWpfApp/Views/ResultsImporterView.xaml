@@ -343,10 +343,14 @@
                                         <RowDefinition></RowDefinition>
                                         <RowDefinition></RowDefinition>
                                         <RowDefinition></RowDefinition>
+
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+
                                     </Grid.RowDefinitions>
 
 
-                                    <Label Grid.Row="0">Constituency Polling</Label>
+                                    <Label Grid.Row="0">Constituency Prediction</Label>
 
                                     <DataGrid Grid.Row="1"
                                         AutoGenerateColumns="False"
@@ -367,11 +371,15 @@
                                                                 Binding="{Binding PercentageConstituencyVoteSwing}" 
                                                                 Width="Auto"/>
 
+                                            <DataGridTextColumn Header="Constituency Seats" 
+                                                                Binding="{Binding ConstituencySeats}" 
+                                                                Width="Auto"/>
+
                                         </DataGrid.Columns>
                                     </DataGrid>
 
 
-                                    <Label Grid.Row="2">List Polling</Label>
+                                    <Label Grid.Row="2">List Prediction</Label>
 
                                     <DataGrid Grid.Row="3" AutoGenerateColumns="False"
                                               ItemsSource="{Binding PartyPredictions, Mode=OneWay}"
@@ -387,13 +395,68 @@
                                                                 Binding="{Binding PercentageListVote}" 
                                                                 Width="Auto"/>
 
-                                            <DataGridTextColumn Header="List Percentage" 
+                                            <DataGridTextColumn Header="List Change" 
                                                                 Binding="{Binding PercentageListVoteSwing}" 
+                                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="List Seats" 
+                                                                Binding="{Binding ListSeats}" 
                                                                 Width="Auto"/>
 
                                             
                                         </DataGrid.Columns>
                                     </DataGrid>
+
+
+                                    <Label Grid.Row="4">Seat Predictions</Label>
+
+
+                                    <DataGrid Grid.Row="5" AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=PredictedResult.PartyVotes, Mode=OneWay}"
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+
+                                        <DataGrid.Columns>
+
+                                            <DataGridTextColumn Header="Abbreviation" 
+                                                Binding="{Binding Abbreviation}" 
+                                                MinWidth="150"/>
+
+                                            <DataGridTextColumn Header="Full Name" 
+                                                Binding="{Binding FullName}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="Total Seats" 
+                                                Binding="{Binding TotalSeats}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="Constituency Seats" 
+                                                Binding="{Binding ConstituencySeats}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="Constituency Vote" 
+                                                Binding="{Binding TotalConstituencyVote}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="Constituency Vote (%)" 
+                                                Binding="{Binding PercentageConstituencyVote}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="List Seats" 
+                                                Binding="{Binding ListSeats}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="List Vote" 
+                                                Binding="{Binding TotalListVote}" 
+                                                Width="Auto"/>
+
+                                            <DataGridTextColumn Header="List Vote (%)" 
+                                                Binding="{Binding PercentageListVote}" 
+                                                Width="Auto"/>
+
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+
                                 </Grid>
 
 

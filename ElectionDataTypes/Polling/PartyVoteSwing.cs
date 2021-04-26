@@ -8,6 +8,7 @@
     {
         public int TotalConstituencyVoteSwing { get; set; }
         public int TotalListVoteSwing { get; set; }
+        public int TotalSeatSwing { get; set; }
 
         public float PercentageConstituencyVoteSwing { get; set; }
         public float PercentageListVoteSwing { get; set; }
@@ -16,6 +17,7 @@
         {
             TotalConstituencyVoteSwing = 0;
             TotalListVoteSwing = 0;
+            TotalSeatSwing = 0;
 
             PercentageConstituencyVoteSwing = 0f;
             PercentageListVoteSwing = 0f;
@@ -25,6 +27,7 @@
         {
             TotalConstituencyVoteSwing = src.TotalConstituencyVoteSwing;
             TotalListVoteSwing = src.TotalListVoteSwing;
+            TotalSeatSwing = src.TotalListVoteSwing;
             PercentageConstituencyVoteSwing = src.PercentageConstituencyVoteSwing;
             PercentageListVoteSwing = src.PercentageListVoteSwing;
         }

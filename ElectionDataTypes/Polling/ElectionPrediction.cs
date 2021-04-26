@@ -1,4 +1,7 @@
-﻿namespace ElectionDataTypes.Polling
+﻿using ElectionDataTypes.Interfaces;
+using ElectionDataTypes.Providers;
+
+namespace ElectionDataTypes.Polling
 {
     using System;
     using System.Collections.Generic;
@@ -37,6 +40,69 @@
 
         private void SetupPartyPredictions()
         {
+            // Copy over the year and notes to the predicted result.
+            PredictedResult = new ElectionResult
+            {
+                Parties = PreviousResult.Parties,
+                Year = PublishedDate.Year
+            };
+
+            // Get the party swings.
+            SetupPartyVoteSwings();
+
+            // Get the constituency swings.
+            Dictionary<string, float> constituencySwingsByParty = 
+                PartyPredictions.ToDictionary(
+                    party => party.Abbreviation, 
+                    party => party.PercentageConstituencyVoteSwing);
+
+            // Copy over the constituency results from the previous and apply the swings.
+            PredictedResult.FirstVotes =
+                GetConstituencyResultProviderWithSwings(PreviousResult.FirstVotes, constituencySwingsByParty);
+
+            // Get the list swings.
+            Dictionary<string, float> listSwingsByParty =
+                PartyPredictions.ToDictionary(
+                    party => party.Abbreviation,
+                    party => party.PercentageListVoteSwing);
+
+            // Copy over the list results from the previous and apply the swings.
+            PredictedResult.SecondVotes = 
+                GetConstituencyResultProviderWithSwings(PreviousResult.SecondVotes, listSwingsByParty);
+
+            // Update the parties seats.
+            for (int i = 0; i < PartyPredictions.Count; i++)
+            {
+                string partyAbbreviation = PartyPredictions[i].Abbreviation;
+                PartyVote predictedResultPartyVote =
+                    PredictedResult.PartyVotes.FirstOrDefault(x => x.Abbreviation == partyAbbreviation);
+
+                if (predictedResultPartyVote != null)
+                {
+                    PartyPredictions[i].ConstituencySeats = predictedResultPartyVote.ConstituencySeats;
+                    PartyPredictions[i].ListSeats = predictedResultPartyVote.ListSeats;
+                }
+            }
+        }
+
+        private static ConstituencyResultProvider GetConstituencyResultProviderWithSwings(
+            IConstituencyResultProvider provider,
+            Dictionary<string, float> swingsByParty)
+        {
+            List<ConstituencyResult> resultsWithSwings = new List<ConstituencyResult>();
+            foreach (string constituencyName in provider.ConstituencyNames)
+            {
+                resultsWithSwings.Add(
+                    new ConstituencyResult(provider.ResultsByName[constituencyName], swingsByParty));
+            }
+
+            ConstituencyResultProvider predictedResultProvider =
+                new ConstituencyResultProvider(resultsWithSwings);
+            return predictedResultProvider;
+        }
+
+        private void SetupPartyVoteSwings()
+        {
             Dictionary<string, PartyVote> partyVotesByAbbreviation = new Dictionary<string, PartyVote>();
 
             // Set up all the parties votes.
@@ -55,7 +121,7 @@
                         {
                             Abbreviation = constituencyVote.PartyAbbreviation,
                             PercentageConstituencyVote = constituencyVote.PercentageOfVotes,
-                            FullName = 
+                            FullName =
                                 PreviousResult.Parties.PartiesByAbbreviation[constituencyVote.PartyAbbreviation]
                         });
                 }
@@ -79,8 +145,8 @@
                             PercentageListVote = listVote.PercentageOfVotes,
                             FullName =
                                 PreviousResult.Parties.PartiesByAbbreviation.ContainsKey(abbreviation)
-                                ? PreviousResult.Parties.PartiesByAbbreviation[abbreviation]
-                                : abbreviation
+                                    ? PreviousResult.Parties.PartiesByAbbreviation[abbreviation]
+                                    : abbreviation
                         });
                 }
             }
