@@ -8,8 +8,20 @@
              mc:Ignorable="d"
              d:DataContext="{x:Type model:MainViewModel}"
              Title="{Binding WindowTitle}"
-             Height="600" Width="800">
+             Height="600" Width="900">
     <Grid>
+        <TabControl>
+            <TabItem Header="Importers">
+
+                <local:ResultsImporterView  DataContext="{Binding Path=ResultsImporter}"/>
+
+            </TabItem>
+            <TabItem Header="Polls">
+
+                <Label>Here is some stuff</Label>
+
+            </TabItem>
+        </TabControl>
             
     </Grid>
 </Window>

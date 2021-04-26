@@ -8,22 +8,29 @@
         /// <summary>
         /// Gets and sets the export directory.
         /// </summary>
-        public string ExportDirectory { get; private set; }
+        public string ExportDirectory { get; set; }
 
         /// <summary>
         /// Gets and sets the results directory.
         /// </summary>
-        public string ResultsDirectory { get; private set; }
+        public string ResultsDirectory { get; set; }
 
         /// <summary>
         /// Gets and sets the predictions directories.
         /// </summary>
-        public string PredictionsDirectory { get; private set; }
+        public string PredictionsDirectory { get; set; }
 
         /// <summary>
         /// Gets and sets the database connection string.
         /// </summary>
-        public string DatabaseConnectionString { get; private set; }
+        public string DatabaseConnectionString { get; set; }
 
+        public DatabaseSettings()
+        {
+            ExportDirectory = string.Empty;
+            ResultsDirectory = string.Empty;
+            PredictionsDirectory = string.Empty;
+            DatabaseConnectionString = string.Empty;
+        }
     }
 }
