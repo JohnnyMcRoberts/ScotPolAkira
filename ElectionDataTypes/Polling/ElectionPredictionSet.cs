@@ -1,5 +1,6 @@
 ﻿namespace ElectionDataTypes.Polling
 {
+    using System;
     using System.Collections.Generic;
     
     using Interfaces;
@@ -8,20 +9,37 @@
     public class ElectionPredictionSet
     {
         public List<ElectionPrediction> Predictions { get; set; }
+        public List<PollingPrediction> PollingPredictions { get; set; }
 
-        public void UpdatePredictions(IPollsProvider polls, ElectionResult previousElectionResult)
+        public event EventHandler PollsUpdated;
+
+        protected virtual void OnPollsUpdated(EventArgs e)
+        {
+            EventHandler handler = PollsUpdated;
+            handler?.Invoke(this, e);
+        }
+
+        public void UpdatePredictions(
+            IPollsProvider polls,
+            ElectionResult previousElectionResult)
         {
             Predictions.Clear();
 
-            foreach (var poll in polls.PollsByDate)
+            foreach (OpinionPoll poll in polls.PollsByDate)
             {
-                Predictions.Add(new ElectionPrediction(previousElectionResult, poll));
+                ElectionPrediction electionPrediction =
+                    new ElectionPrediction(previousElectionResult, poll);
+                Predictions.Add(electionPrediction);
+                PollingPredictions.Add(new PollingPrediction(electionPrediction , poll));
             }
+
+            OnPollsUpdated(null);
         }
 
         public ElectionPredictionSet()
         {
             Predictions = new List<ElectionPrediction>();
+            PollingPredictions = new List<PollingPrediction>();
         }
     }
 }
