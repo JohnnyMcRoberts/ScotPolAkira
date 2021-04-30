@@ -1,4 +1,6 @@
-﻿namespace ScotPolWpfApp.PlotGenerators
+﻿using OxyPlot.Annotations;
+
+namespace ScotPolWpfApp.PlotGenerators
 {
     using System;
     using System.Collections.Generic;
@@ -81,6 +83,23 @@
             {
                 newPlot.Series.Add(series);
             }
+
+            // add a line annotation
+            double X = 5D;
+            double Y =65D;
+
+            LineAnnotation Line = new LineAnnotation()
+            {
+                StrokeThickness = 3,
+                Color = OxyColors.Crimson,
+                Type = LineAnnotationType.Horizontal,
+                Text = "Majority",
+                TextColor = OxyColors.Crimson,
+                X = X,
+                Y = Y
+            };
+
+            newPlot.Annotations.Add(Line);
         }
 
         private void AddValuesToSeries(
