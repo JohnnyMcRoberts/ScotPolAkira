@@ -8,5 +8,11 @@
             CanHover = false,
             GeneratorClass = typeof(ListVotesWithTime))]
         ListVotesWithTime,
+
+        [PlotType(Title = "Constituency votes with time",
+            CanHover = false,
+            GeneratorClass = typeof(ConstituencyVotesWithTime))]
+        ConstituencyVotesWithTime,
+
     }
 }

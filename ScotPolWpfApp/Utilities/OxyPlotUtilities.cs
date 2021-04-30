@@ -3,7 +3,6 @@ namespace ScotPolWpfApp.Utilities
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using OxyPlot;
     using OxyPlot.Series;
 
@@ -114,6 +113,31 @@ namespace ScotPolWpfApp.Utilities
                 XAxisKey = xAxisKey,
                 YAxisKey = yAxisKey,
                 Color = colour
+            };
+        }
+
+        public static void CreateScatterSeries(
+            out ScatterSeries series,
+            string xAxisKey,
+            string yAxisKey,
+            string title,
+            int colourIndex,
+            byte aValue = 225,
+            bool includeInLegend = true)
+        {
+            List<OxyColor> coloursArray = SetupStandardColourSet(aValue);
+
+            int index = colourIndex % coloursArray.Count;
+            OxyColor colour = coloursArray[index];
+
+            series = new ScatterSeries
+            {
+                Title = includeInLegend ? title : string.Empty,
+                XAxisKey = xAxisKey,
+                YAxisKey = yAxisKey,
+                MarkerSize = 5,
+                MarkerType = MarkerType.Circle,
+                MarkerFill = colour
             };
         }
 

@@ -17,7 +17,7 @@ namespace ElectionDataTypes.Polling
             ALBA
         };
 
-        public readonly string[] PartiesList =
+        public static readonly string[] PartiesList =
         {
             "SNP",
             "CON",

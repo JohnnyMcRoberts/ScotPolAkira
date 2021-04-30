@@ -20,6 +20,8 @@
 
         private DateTime _lastUpdated;
 
+        private readonly OxyPlotViewModel[] _plotViewModels;
+
         /// <summary>
         /// The load notes command.
         /// </summary>
@@ -96,15 +98,25 @@
 
         public OxyPlotViewModel PlotListVotesWithTime { get; private set; }
 
+        public OxyPlotViewModel PlotConstituencyVotesWithTime { get; private set; }
+
         #endregion
-        
+
         #region Local Methods
 
         private void PredictionsPollsUpdated(object sender, EventArgs e)
         {
             LastUpdated = DateTime.Now;
-            PlotListVotesWithTime.Update(ElectionResults, ElectionPredictions);
-            NotifyOfPropertyChange(() => PlotListVotesWithTime);
+            //PlotListVotesWithTime.Update(ElectionResults, ElectionPredictions);
+            //NotifyOfPropertyChange(() => PlotListVotesWithTime);
+
+            //PlotConstituencyVotesWithTime.Update(ElectionResults, ElectionPredictions);
+            //NotifyOfPropertyChange(() => PlotConstituencyVotesWithTime);
+
+            foreach (var plot in _plotViewModels)
+            {
+                plot.Update(ElectionResults, ElectionPredictions);
+            }
         }
 
         #endregion
@@ -113,7 +125,16 @@
         {
             LastUpdated = DateTime.Now;
             PlotListVotesWithTime =
-                new OxyPlotViewModel( PlotType.ListVotesWithTime);
+                new OxyPlotViewModel(PlotType.ListVotesWithTime);
+            PlotConstituencyVotesWithTime =
+                new OxyPlotViewModel(PlotType.ConstituencyVotesWithTime);
+
+            _plotViewModels = 
+                new[]
+                {
+                    PlotListVotesWithTime, 
+                    PlotConstituencyVotesWithTime
+                };
         }
     }
 }

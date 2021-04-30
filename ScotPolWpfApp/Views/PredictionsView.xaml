@@ -32,17 +32,23 @@
         </Grid>
 
         <TabControl Grid.Row="1">
-            <TabItem Header="Poll Details">
 
+            <TabItem Header="List Vote With Time">
+                <ScrollViewer>
+
+                    <local:OxyPlotView  DataContext="{Binding Path=PlotListVotesWithTime}"/>
+
+                </ScrollViewer>
             </TabItem>
-            <TabItem Header="Trends By Time">
-                    <ScrollViewer>
 
+            <TabItem Header="Constituency Vote With Time">
+                <ScrollViewer>
 
-                        <local:OxyPlotView  DataContext="{Binding Path=PlotListVotesWithTime}"/>
+                    <local:OxyPlotView  DataContext="{Binding Path=PlotConstituencyVotesWithTime}"/>
 
-                    </ScrollViewer>
+                </ScrollViewer>
             </TabItem>
+
         </TabControl>
 
     </Grid>
