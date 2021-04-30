@@ -1,27 +1,29 @@
 ﻿namespace ScotPolWpfApp.ViewModels
 {
     using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
     using System.Windows.Input;
-
-    using ElectionDataParser;
-
+    
     using ElectionDataTypes.Polling;
     using ElectionDataTypes.Results;
 
-    using Models;
+    using Utilities;
+
 
     /// <summary>
     /// This class will display the polling predictions.
     /// </summary>
     public class PredictionsViewModel : Caliburn.Micro.PropertyChangedBase
     {
-        #region Properties
+        #region Private Data
 
         private ElectionPredictionSet _electionPredictions;
 
         private DateTime _lastUpdated;
+
+        /// <summary>
+        /// The load notes command.
+        /// </summary>
+        private ICommand _refreshChartsCommand;
 
         #endregion
 
@@ -57,11 +59,52 @@
 
         #endregion
 
+        #region Commands
+
+        /// <summary>
+        /// Load the notes command.
+        /// </summary>
+        public ICommand RefreshChartsCommand =>
+            _refreshChartsCommand ??
+            (_refreshChartsCommand = new CommandHandler(RefreshChartsCommandAction, true));
+
+        #endregion
+
+        #region Command handlers
+
+        /// <summary>
+        /// The load notes file command action.
+        /// </summary>
+        private void RefreshChartsCommandAction()
+        {
+            Console.WriteLine("RefreshChartsCommandAction");
+
+            lock (PlotListVotesWithTime.Model.SyncRoot)
+            {
+                PlotListVotesWithTime.Update(ElectionResults, ElectionPredictions);
+            }
+
+            PlotListVotesWithTime.Model.InvalidatePlot(true);
+
+            NotifyOfPropertyChange(() => PlotListVotesWithTime);
+
+        }
+
+        #endregion
+
+        #region Plots
+
+        public OxyPlotViewModel PlotListVotesWithTime { get; private set; }
+
+        #endregion
+        
         #region Local Methods
 
         private void PredictionsPollsUpdated(object sender, EventArgs e)
         {
             LastUpdated = DateTime.Now;
+            PlotListVotesWithTime.Update(ElectionResults, ElectionPredictions);
+            NotifyOfPropertyChange(() => PlotListVotesWithTime);
         }
 
         #endregion
@@ -69,6 +112,8 @@
         public PredictionsViewModel()
         {
             LastUpdated = DateTime.Now;
+            PlotListVotesWithTime =
+                new OxyPlotViewModel( PlotType.ListVotesWithTime);
         }
     }
 }

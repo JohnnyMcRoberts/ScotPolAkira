@@ -85,6 +85,42 @@ namespace ElectionDataTypes.Polling
             }
         }
 
+        public float GetPartyValue(string party)
+        {
+            for (int i = 0; i < PartiesList.Length; i++)
+            {
+                if (PartiesList[i] == party)
+                {
+                    // Convert to enum.
+                    Parties partyValue = 
+                        (Parties)Enum.ToObject(typeof(Parties), i);
+
+                    switch (partyValue)
+                    {
+                        case Parties.SNP:
+                            return SNP;
+
+                        case Parties.CON:
+                            return CON;
+
+                        case Parties.LAB:
+                            return LAB;
+
+                        case Parties.LIB:
+                            return LIB;
+
+                        case Parties.SGRN:
+                            return SGRN;
+
+                        case Parties.ALBA:
+                            return ALBA;
+                    }
+                }
+            }
+
+            return 0f;
+        }
+
         #endregion
 
         public PartyPrediction()

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectionDataParser", "..\El
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectionDataTypes", "..\ElectionDataTypes\ElectionDataTypes.csproj", "{85E71D81-8A95-41C8-83B7-ABE7A355FF03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotPolWpfApp", "..\ScotPolWpfApp\ScotPolWpfApp.csproj", "{7092894F-889A-475A-BCA7-4EC584DC42C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScotPolWpfApp", "..\ScotPolWpfApp\ScotPolWpfApp.csproj", "{7092894F-889A-475A-BCA7-4EC584DC42C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

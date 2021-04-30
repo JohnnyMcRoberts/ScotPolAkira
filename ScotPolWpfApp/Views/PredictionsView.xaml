@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScotPolWpfApp.Views"
+             xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -17,10 +18,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" 
+                    x:Name="Refresh" 
+                    Content="Refresh"  
+                    Command="{Binding Path=RefreshChartsCommand}"/>
 
-            <Label>Last Updated:</Label>
-            <Label Grid.Column="1" Content="{Binding LastUpdated}" ContentStringFormat="dd MMM yyyy hh:mm:ss"/>
+            <Label Grid.Column="1" >Last Updated:</Label>
+            <Label Grid.Column="2" 
+                   Content="{Binding LastUpdated}" 
+                   ContentStringFormat="dd MMM yyyy hh:mm:ss"/>
         </Grid>
 
         <TabControl Grid.Row="1">
@@ -28,7 +36,12 @@
 
             </TabItem>
             <TabItem Header="Trends By Time">
+                    <ScrollViewer>
 
+
+                        <local:OxyPlotView  DataContext="{Binding Path=PlotListVotesWithTime}"/>
+
+                    </ScrollViewer>
             </TabItem>
         </TabControl>
 
