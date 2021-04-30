@@ -14,5 +14,15 @@
             GeneratorClass = typeof(ConstituencyVotesWithTime))]
         ConstituencyVotesWithTime,
 
+        [PlotType(Title = "Total seats with time",
+            CanHover = false,
+            GeneratorClass = typeof(TotalSeatsWithTime))]
+        TotalSeatsWithTime,
+
+        [PlotType(Title = "Total stacked seats with time",
+            CanHover = false,
+            GeneratorClass = typeof(TotalSeatsStackedWithTime))]
+        TotalSeatsStackedWithTime,
+
     }
 }

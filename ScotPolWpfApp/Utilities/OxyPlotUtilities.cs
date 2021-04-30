@@ -141,5 +141,32 @@ namespace ScotPolWpfApp.Utilities
             };
         }
 
-    }
+        public static IEnumerable<AreaSeries> StackLineSeries(
+            IList<LineSeries> series)
+        {
+            double[] total = new double[series[0].Points.Count];
+
+            for (int s = 0; s < series.Count; s++)
+            {
+                LineSeries lineSeries = series[s];
+                AreaSeries areaSeries = new AreaSeries()
+                {
+                    Title = lineSeries.Title,
+                    Color = lineSeries.Color,
+                };
+
+                for (int p = 0; p < lineSeries.Points.Count; p++)
+                {
+                    double x = lineSeries.Points[p].X;
+                    double y = lineSeries.Points[p].Y;
+
+                    areaSeries.Points.Add(new DataPoint(x, total[p]));
+                    total[p] += y;
+                    areaSeries.Points2.Add(new DataPoint(x, total[p]));
+                }
+
+                yield return areaSeries;
+            }
+        }
+        }
 }

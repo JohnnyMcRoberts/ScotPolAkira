@@ -1,5 +1,7 @@
 ﻿namespace ScotPolWpfApp.PlotGenerators
 {
+    using System.Collections.Generic;
+
     using ElectionDataTypes.Polling;
     using ElectionDataTypes.Results;
 
@@ -12,13 +14,28 @@
     /// </summary>
     public abstract class BasePlotGenerator : IPlotGenerator
     {
+        #region Constants
+
+        public readonly Dictionary<string, int> PartyNameToColoursLookup =
+            new Dictionary<string, int>
+            {
+                {"LAB", 0},
+                {"SGRN", 1},
+                {"CON", 2},
+                {"SNP", 3},
+                {"LIB", 40},
+                {"ALBA", 5}
+            };
+
+        #endregion
+
         /// <summary>
-        /// Gets the geography data for the plots.
+        /// Gets the previous election results for the plots.
         /// </summary>
         public ElectionResult ElectionResults { get; private set; }
 
         /// <summary>
-        /// Gets the books read data for the plots.
+        /// Gets the polling predictions for the plots.
         /// </summary>
         public ElectionPredictionSet ElectionPredictions { get; private set; }
 

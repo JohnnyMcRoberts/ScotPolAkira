@@ -15,32 +15,12 @@
     /// <summary>
     /// The percentage votes with time plot generator.
     /// </summary>
-    public abstract class PercentageVoteWithTime : BasePlotGenerator
+    public abstract class PercentageVoteWithTime : PollsWithTimePlot
     {
-        public abstract string AxisTitle { get; }
-
-        public abstract string PlotTitle { get; }
-
-        public abstract PartyPrediction GetPartyPredictionValues(PollingPrediction prediction);
-
-        #region Constants
-
-        public readonly Dictionary<string, int> PartyNameToColoursLookup =
-            new Dictionary<string, int>
-            {
-                {"LAB", 0},
-                {"SGRN", 1},
-                {"CON", 2},
-                {"SNP", 3},
-                {"LIB", 40},
-                {"ALBA", 5}
-            };
-
-        #endregion
-
+        
         #region Private Methods
 
-        private void UpdateModel(ref PlotModel newPlot)
+        public override void UpdateModel(ref PlotModel newPlot)
         {
             OxyPlotUtilities.SetupPlotLegend(newPlot, PlotTitle);
             SetupListVotesVsTimeAxes(newPlot);
@@ -53,17 +33,8 @@
             }
 
             // Get the polls by date.
-            List<KeyValuePair<DateTime, PartyPrediction>> pollValues =
-                new List<KeyValuePair<DateTime, PartyPrediction>>();
-
-            foreach (PollingPrediction prediction in ElectionPredictions.PollingPredictions)
-            {
-                PartyPrediction partyPredictionValues = GetPartyPredictionValues(prediction);
-
-                pollValues.Add(
-                    new KeyValuePair<DateTime, PartyPrediction>(
-                        prediction.PublicationDate, partyPredictionValues));
-            }
+            List<KeyValuePair<DateTime, PartyPrediction>> pollValues = 
+                GetPartyPredictionsByDate();
 
             // Get the party names.
             string[] partiesNames = PartyPrediction.PartiesList;

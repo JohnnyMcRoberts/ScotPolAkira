@@ -100,6 +100,10 @@
 
         public OxyPlotViewModel PlotConstituencyVotesWithTime { get; private set; }
 
+        public OxyPlotViewModel PlotTotalSeatsWithTime { get; private set; }
+
+        public OxyPlotViewModel PlotTotalSeatsStackedWithTime { get; private set; }
+
         #endregion
 
         #region Local Methods
@@ -107,13 +111,8 @@
         private void PredictionsPollsUpdated(object sender, EventArgs e)
         {
             LastUpdated = DateTime.Now;
-            //PlotListVotesWithTime.Update(ElectionResults, ElectionPredictions);
-            //NotifyOfPropertyChange(() => PlotListVotesWithTime);
 
-            //PlotConstituencyVotesWithTime.Update(ElectionResults, ElectionPredictions);
-            //NotifyOfPropertyChange(() => PlotConstituencyVotesWithTime);
-
-            foreach (var plot in _plotViewModels)
+            foreach (OxyPlotViewModel plot in _plotViewModels)
             {
                 plot.Update(ElectionResults, ElectionPredictions);
             }
@@ -128,12 +127,17 @@
                 new OxyPlotViewModel(PlotType.ListVotesWithTime);
             PlotConstituencyVotesWithTime =
                 new OxyPlotViewModel(PlotType.ConstituencyVotesWithTime);
+            PlotTotalSeatsWithTime =
+                new OxyPlotViewModel(PlotType.TotalSeatsWithTime);
+            PlotTotalSeatsStackedWithTime =
+                new OxyPlotViewModel(PlotType.TotalSeatsStackedWithTime);
 
-            _plotViewModels = 
-                new[]
+            _plotViewModels = new[]
                 {
                     PlotListVotesWithTime, 
-                    PlotConstituencyVotesWithTime
+                    PlotConstituencyVotesWithTime,
+                    PlotTotalSeatsWithTime,
+                    PlotTotalSeatsStackedWithTime
                 };
         }
     }

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScotPolWpfApp.Utilities
+﻿namespace ScotPolWpfApp.Utilities
 {
     public class ChartAxisKeys
     {
         public const string DateKey = "Date";
 
         public const string PercentageListVotes = "PercentageListVotes";
+
+        public const string PercentageConstituencyVotes = "PercentageConstituencyVotes";
+
+        public const string TotalPredictedSeats = "TotalPredictedSeats";
 
         //public const string TotalBooksReadKey = "TotalBooksRead";
 

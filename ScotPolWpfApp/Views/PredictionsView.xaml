@@ -48,6 +48,22 @@
 
                 </ScrollViewer>
             </TabItem>
+            
+        <TabItem Header="Total Seats With Time">
+            <ScrollViewer>
+
+                <local:OxyPlotView  DataContext="{Binding Path=PlotTotalSeatsWithTime}"/>
+
+            </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Total Seats Columns With Time">
+                <ScrollViewer>
+
+                    <local:OxyPlotView  DataContext="{Binding Path=PlotTotalSeatsStackedWithTime}"/>
+
+                </ScrollViewer>
+            </TabItem>
 
         </TabControl>
 
