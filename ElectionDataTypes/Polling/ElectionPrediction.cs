@@ -108,21 +108,25 @@ namespace ElectionDataTypes.Polling
             // Set up all the parties votes.
             foreach (PartyResult constituencyVote in OpinionPoll.ConstituencyPredictions)
             {
-                if (partyVotesByAbbreviation.ContainsKey(constituencyVote.PartyAbbreviation))
+
+                string abbreviation = constituencyVote.PartyAbbreviation;
+                if (partyVotesByAbbreviation.ContainsKey(abbreviation))
                 {
-                    partyVotesByAbbreviation[constituencyVote.PartyAbbreviation].PercentageConstituencyVote =
+                    partyVotesByAbbreviation[abbreviation].PercentageConstituencyVote =
                         constituencyVote.PercentageOfVotes;
                 }
                 else
                 {
                     partyVotesByAbbreviation.Add(
-                        constituencyVote.PartyAbbreviation,
+                        abbreviation,
                         new PartyVote
                         {
-                            Abbreviation = constituencyVote.PartyAbbreviation,
+                            Abbreviation = abbreviation,
                             PercentageConstituencyVote = constituencyVote.PercentageOfVotes,
                             FullName =
-                                PreviousResult.Parties.PartiesByAbbreviation[constituencyVote.PartyAbbreviation]
+                                PreviousResult.Parties.PartiesByAbbreviation.ContainsKey(abbreviation)
+                                    ? PreviousResult.Parties.PartiesByAbbreviation[abbreviation]
+                                    : abbreviation
                         });
                 }
             }

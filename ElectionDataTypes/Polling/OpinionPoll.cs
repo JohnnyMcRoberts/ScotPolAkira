@@ -7,7 +7,13 @@
 
     public class OpinionPoll
     {
+        #region Private Data
+
         private string _link = string.Empty;
+
+        #endregion
+
+        #region Public Properties
 
         public string PollingCompany { get; set; }
 
@@ -28,6 +34,9 @@
         public List<PartyResult> ConstituencyPredictions { get; set; }
 
         public List<PartyResult> ListPredictions { get; set; }
+
+        #endregion
+
 
         public OpinionPoll()
         {
