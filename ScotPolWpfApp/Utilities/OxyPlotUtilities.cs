@@ -99,8 +99,9 @@ namespace ScotPolWpfApp.Utilities
             string xAxisKey,
             string yAxisKey, 
             string title, 
-            int colourIndex, 
-            byte aValue = 225)
+            int colourIndex,
+            byte aValue = 225,
+            double? strokeThickness = null)
         {
             List<OxyColor> coloursArray = SetupStandardColourSet(aValue);
 
@@ -114,6 +115,11 @@ namespace ScotPolWpfApp.Utilities
                 YAxisKey = yAxisKey,
                 Color = colour
             };
+
+            if (strokeThickness.HasValue)
+            {
+                series.StrokeThickness = strokeThickness.Value;
+            }
         }
 
         public static void CreateScatterSeries(

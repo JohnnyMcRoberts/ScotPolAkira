@@ -17,7 +17,6 @@
     /// </summary>
     public abstract class PercentageVoteWithTime : PollsWithTimePlot
     {
-        
         #region Private Methods
 
         public override void UpdateModel(ref PlotModel newPlot)
@@ -81,7 +80,8 @@
                     ChartAxisKeys.PercentageListVotes,
                     partiesNames[i],
                     colourIndex,
-                    128);
+                    128,
+                    strokeThickness: 3);
 
                 partiesLineSeries.Add(
                     new KeyValuePair<string, LineSeries>(partiesNames[i], partyLineSeries));
@@ -166,6 +166,9 @@
                 {
                     Title = PlotTitle
                 };
+
+            newPlot.Background = OxyColors.Silver;
+            newPlot.PlotAreaBackground = OxyColors.Gray;
 
             UpdateModel(ref newPlot);
 
