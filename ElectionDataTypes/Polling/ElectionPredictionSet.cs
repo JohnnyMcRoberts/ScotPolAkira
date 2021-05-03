@@ -70,11 +70,11 @@ namespace ElectionDataTypes.Polling
         private static OpinionPoll GetInterpolationPoll(
             IPollsProvider polls, 
             DateTime startDate, 
-            int i,
+            int daysSinceStart,
             List<PartyPollingResultsSet> constituencyPredictors,
             List<PartyPollingResultsSet> listPredictors)
         {
-            DateTime interpolatedDate = startDate.AddDays(i);
+            DateTime interpolatedDate = startDate.AddDays(daysSinceStart);
 
             // Get the interpolated percentages
             List<PartyResult> constituencyPredictions =

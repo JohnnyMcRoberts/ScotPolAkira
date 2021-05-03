@@ -25,15 +25,17 @@
             SetupListVotesVsTimeAxes(newPlot);
 
             // if no data stop
-            if (ElectionPredictions?.PollingPredictions == null ||
-                !ElectionPredictions.PollingPredictions.Any())
+            if (PollingPredictions == null || !PollingPredictions.Any())
             {
                 return;
             }
 
-            // Get the polls by date.
-            List<KeyValuePair<DateTime, PartyPrediction>> pollValues = 
+            // Get the data vales by date.
+            List<KeyValuePair<DateTime, PartyPrediction>> pollValues =
                 GetPartyPredictionsByDate();
+
+            List<KeyValuePair<DateTime, PartyPrediction>> interpolationValues =
+                GetPartyPredictionsByDate(false);
 
             // Get the party names.
             string[] partiesNames = PartyPrediction.PartiesList;
@@ -41,24 +43,73 @@
             // Add a line and a scatter series per party
             List<KeyValuePair<string, LineSeries>> partiesLineSeries =
                 new List<KeyValuePair<string, LineSeries>>();
+            List<KeyValuePair<string, LineSeries>> partiesLineInterpolationSeries =
+                new List<KeyValuePair<string, LineSeries>>();
             List<KeyValuePair<string, ScatterSeries>> partiesScatterSeries =
                 new List<KeyValuePair<string, ScatterSeries>>();
 
             SetupPartiesSeries(partiesNames, partiesLineSeries, partiesScatterSeries);
+            SetupPartiesLineSeries(partiesNames, partiesLineInterpolationSeries);
 
             // loop through the polls adding points for each of the items to the lines
             AddPercentageValuesToSeries(pollValues, partiesLineSeries, partiesScatterSeries);
+            AddPercentageValuesToSeries(interpolationValues, partiesLineInterpolationSeries);
 
-            // add them to the plot
-            foreach (KeyValuePair<string, LineSeries> partyLines in partiesLineSeries)
+            // add the series to the plot
+            foreach (KeyValuePair<string, LineSeries> partyLines in partiesLineInterpolationSeries)
             {
                 newPlot.Series.Add(partyLines.Value);
             }
+
+            //foreach (KeyValuePair<string, LineSeries> partyLines in partiesLineSeries)
+            //{
+            //    newPlot.Series.Add(partyLines.Value);
+            //}
 
             foreach (KeyValuePair<string, ScatterSeries> partyScatters in partiesScatterSeries)
             {
                 newPlot.Series.Add(partyScatters.Value);
             }
+        }
+
+        private void SetupPartiesLineSeries(
+            string[] partiesNames,
+            List<KeyValuePair<string, LineSeries>> partiesLineSeries,
+            bool interpolated = false)
+        {
+            for (int i = 0; i < partiesNames.Length; i++)
+            {
+                int colorIndex = SetupPartNameAndColor(partiesNames, i);
+
+                LineSeries partyLineSeries;
+                if (!interpolated)
+                {
+                    OxyPlotUtilities.CreateLongLineSeries(
+                        out partyLineSeries,
+                        ChartAxisKeys.DateKey,
+                        ChartAxisKeys.PercentageListVotes,
+                        partiesNames[i],
+                        colorIndex,
+                        175,
+                        strokeThickness: 3);
+                }
+                else
+                {
+                    OxyPlotUtilities.CreateLongLineSeries(
+                        out partyLineSeries,
+                        ChartAxisKeys.DateKey,
+                        ChartAxisKeys.PercentageListVotes,
+                        partiesNames[i],
+                        colorIndex,
+                        125,
+                        strokeThickness: 2, 
+                        includeInLegend: false);
+                }
+
+                partiesLineSeries.Add(
+                    new KeyValuePair<string, LineSeries>(partiesNames[i], partyLineSeries));
+            }
+
         }
 
         private void SetupPartiesSeries(
@@ -68,11 +119,7 @@
         {
             for (int i = 0; i < partiesNames.Length; i++)
             {
-                string partyName = partiesNames[i];
-                int colourIndex =
-                    PartyNameToColoursLookup.ContainsKey(partyName)
-                        ? PartyNameToColoursLookup[partyName]
-                        : i;
+                int colourIndex = SetupPartNameAndColor(partiesNames, i);
 
                 OxyPlotUtilities.CreateLongLineSeries(
                     out LineSeries partyLineSeries,
@@ -97,6 +144,38 @@
 
                 partiesScatterSeries.Add(
                     new KeyValuePair<string, ScatterSeries>(partiesNames[i], scatterSeries));
+            }
+        }
+
+        private int SetupPartNameAndColor(string[] partiesNames, int partyIndex)
+        {
+            string partyName = partiesNames[partyIndex];
+            int colourIndex =
+                PartyNameToColoursLookup.ContainsKey(partyName)
+                    ? PartyNameToColoursLookup[partyName]
+                    : partyIndex;
+
+            return colourIndex;
+        }
+
+        private static void AddPercentageValuesToSeries(
+            List<KeyValuePair<DateTime, PartyPrediction>> pollValues,
+            List<KeyValuePair<string, LineSeries>> partiesLineSeries)
+        {
+            foreach (KeyValuePair<DateTime, PartyPrediction> pollValuePair in pollValues)
+            {
+                double date = DateTimeAxis.ToDouble(pollValuePair.Key);
+                PartyPrediction partyPrediction = pollValuePair.Value;
+
+                for (int i = 0; i < partiesLineSeries.Count; i++)
+                {
+                    string key = partiesLineSeries[i].Key;
+
+                    double percentage =
+                        partyPrediction.GetPartyValue(key);
+
+                    partiesLineSeries[i].Value.Points.Add(new DataPoint(date, percentage));
+                }
             }
         }
 

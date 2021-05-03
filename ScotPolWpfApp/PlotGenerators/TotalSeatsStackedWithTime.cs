@@ -42,8 +42,7 @@ namespace ScotPolWpfApp.PlotGenerators
             // finally update the model with the new plot
             return newPlot;
         }
-
-
+        
         #region Private Methods
 
         public override void UpdateModel(ref PlotModel newPlot)
@@ -88,7 +87,7 @@ namespace ScotPolWpfApp.PlotGenerators
             double X = 5D;
             double Y =65D;
 
-            LineAnnotation Line = new LineAnnotation()
+            LineAnnotation lineAnnotation = new LineAnnotation()
             {
                 StrokeThickness = 3,
                 Color = OxyColors.Crimson,
@@ -99,7 +98,7 @@ namespace ScotPolWpfApp.PlotGenerators
                 Y = Y
             };
 
-            newPlot.Annotations.Add(Line);
+            newPlot.Annotations.Add(lineAnnotation);
         }
 
         private void AddValuesToSeries(

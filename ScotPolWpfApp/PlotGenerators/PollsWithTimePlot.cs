@@ -25,12 +25,22 @@
 
         public abstract void UpdateModel(ref PlotModel newPlot);
 
-        public List<KeyValuePair<DateTime, PartyPrediction>> GetPartyPredictionsByDate()
+        public List<PollingPrediction> PollingPredictions =>
+            ElectionPredictions.PollingPredictions;
+            
+        public List<PollingPrediction> InterpolatedPredictions =>
+                ElectionPredictions.InterpolatedPredictions;
+                
+        public List<KeyValuePair<DateTime, PartyPrediction>> GetPartyPredictionsByDate(
+            bool usePolling = true)
         {
             List<KeyValuePair<DateTime, PartyPrediction>> pollValues =
                 new List<KeyValuePair<DateTime, PartyPrediction>>();
 
-            foreach (PollingPrediction prediction in ElectionPredictions.PollingPredictions)
+            List<PollingPrediction> predictions = 
+                usePolling ? PollingPredictions:InterpolatedPredictions;
+
+            foreach (PollingPrediction prediction in predictions)
             {
                 PartyPrediction partyPredictionValues = GetPartyPredictionValues(prediction);
 

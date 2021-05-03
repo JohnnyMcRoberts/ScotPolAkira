@@ -101,7 +101,8 @@ namespace ScotPolWpfApp.Utilities
             string title, 
             int colourIndex,
             byte aValue = 225,
-            double? strokeThickness = null)
+            double? strokeThickness = null,
+            bool includeInLegend = true)
         {
             List<OxyColor> coloursArray = SetupStandardColourSet(aValue);
 
@@ -110,7 +111,7 @@ namespace ScotPolWpfApp.Utilities
 
             series = new LineSeries
             {
-                Title = title,
+                Title = includeInLegend ? title : string.Empty,
                 XAxisKey = xAxisKey,
                 YAxisKey = yAxisKey,
                 Color = colour
