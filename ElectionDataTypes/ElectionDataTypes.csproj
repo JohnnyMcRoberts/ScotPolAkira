@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="alglibnet2" Version="0.0.0" />
+  </ItemGroup>
+
 </Project>

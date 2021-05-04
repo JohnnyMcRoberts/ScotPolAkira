@@ -16,9 +16,9 @@
                 <local:ResultsImporterView  DataContext="{Binding Path=ResultsImporter}"/>
 
             </TabItem>
-            <TabItem Header="Polls">
+            <TabItem Header="Predictions">
 
-                <Label>Here is some stuff</Label>
+                <local:PredictionsView  DataContext="{Binding Path=Predictions}"/>
 
             </TabItem>
         </TabControl>

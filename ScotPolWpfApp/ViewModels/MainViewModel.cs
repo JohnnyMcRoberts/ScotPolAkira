@@ -25,6 +25,9 @@
         private ResultsImporterViewModel _resultsImporterViewModel = 
             new ResultsImporterViewModel();
 
+        private PredictionsViewModel _predictionsViewModel =
+            new PredictionsViewModel();
+
         #endregion
 
         #region Properties
@@ -49,12 +52,29 @@
             }
         }
 
+        public PredictionsViewModel Predictions
+        {
+            get => _predictionsViewModel;
+            set
+            {
+                _predictionsViewModel = value;
+                NotifyOfPropertyChange(() => Predictions);
+            }
+        }
+
         #endregion
 
         public MainViewModel(DatabaseSettings dbSettings)
         {
             ResultsImporter = 
                 new ResultsImporterViewModel
+                {
+                    ElectionResults = _electionResult,
+                    ElectionPredictions = _electionPredictions
+                };
+
+            Predictions =
+                new PredictionsViewModel
                 {
                     ElectionResults = _electionResult,
                     ElectionPredictions = _electionPredictions

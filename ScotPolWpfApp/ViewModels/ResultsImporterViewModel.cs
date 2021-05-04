@@ -1,6 +1,4 @@
-﻿using ElectionDataTypes.Polling;
-
-namespace ScotPolWpfApp.ViewModels
+﻿namespace ScotPolWpfApp.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
@@ -9,6 +7,7 @@ namespace ScotPolWpfApp.ViewModels
 
     using ElectionDataParser;
 
+    using ElectionDataTypes.Polling;
     using ElectionDataTypes.Results;
 
     using Models;
@@ -128,7 +127,6 @@ namespace ScotPolWpfApp.ViewModels
             get => _regionalListsFile;
             set { _regionalListsFile = value; NotifyOfPropertyChange(() => RegionalListsFile); }
         }
-
 
         /// <summary>
         /// Gets or sets the polls file name.
